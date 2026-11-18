@@ -9,7 +9,7 @@
  * The cards say Stand-in or Waiting on purpose. Brand Hub, Brand Agent,
  * and a live social feed are not connected.
  *
- * "Who is speaking" is a count, not a new check. The groups are:
+ * "On brand by source" is a count, not a new check. The groups are:
  *   alfa-laval   Alfa Laval's own site
  *   distributor  a distributor page
  *   partner      a company that works with Alfa Laval. Still checked.
@@ -17,6 +17,8 @@
  *   website      any other site, such as a spare-parts listing
  *   social       a post. Seeded rows are samples. Live rows need Kim's feed.
  * The chip is "passed of total" for that group. Review does not pass.
+ * The screen says "On brand by source". The field in sources.json is
+ * still page.speaker.
  * Wilmer: set page.speaker in data/sources.json. This file only reads it.
  * A real http address is a link Kim can open. example.com is a written
  * sample and is not linked. Put the live URL in page.url when you have it.
@@ -38,10 +40,10 @@ const VERDICT_LABEL = {
 const SPEAKER_ORDER = ["alfa-laval", "distributor", "partner", "website", "social"];
 
 const SPEAKER_LABEL = {
-  "alfa-laval": "Alfa Laval",
+  "alfa-laval": "Alfa Laval site",
   distributor: "Distributors",
   partner: "Partners",
-  website: "Websites",
+  website: "Other websites",
   social: "Social"
 };
 
@@ -133,7 +135,7 @@ function renderSpeakers(reports) {
     return `<li><span>${escapeHtml(SPEAKER_LABEL[speaker])}</span> ${passed} of ${group.length}</li>`;
   }).join("");
   document.getElementById("speakers").innerHTML = `
-    <p>Who is speaking</p>
+    <p>On brand by source</p>
     <ul>${chips}</ul>`;
 }
 

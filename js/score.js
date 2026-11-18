@@ -8,7 +8,7 @@
  *
  * The score is the share of pages that passed. Passed means the verdict
  * is On brand. Review and Mismatch do not pass. The same count is repeated
- * for each country. The "Who is speaking" strip uses this same rule. It is
+ * for each country. The "On brand by source" strip uses this same rule. It is
  * drawn in dashboard.js from the verdict, not from a second formula.
  */
 

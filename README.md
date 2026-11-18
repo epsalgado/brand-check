@@ -19,7 +19,7 @@ Start at `js/main.js`. It runs the product in order:
 | Brand Agent | `js/brand-agent.js` | Judges one page. Returns On brand, Review, or Mismatch, plus the reason. Today the local check is the stand-in. |
 | Check | `js/analyzer.js` | The stand-in judgment: claims, logo, color, language. |
 | Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed. Review does not pass. |
-| Show | `js/dashboard.js` | Draws the score, who is speaking, the queue, and the open case. It does not decide the verdict. |
+| Show | `js/dashboard.js` | Draws the score, the source counts, the queue, and the open case. It does not decide the verdict. |
 
 The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
@@ -73,7 +73,7 @@ The screen already has a slot for each approval:
 | Brand Agent returns On brand, Review, or Mismatch, with the reason | `js/brand-agent.js` | Stand-in. The four checks fill the same answer. |
 | Design system is only the look | `css/dashboard.css` | Already the look. It is not a check. |
 | Score is the share that passed, in total and per country | `js/score.js` | Passed of total on the blue tile, and the same split on each country chip. Review does not pass. |
-| Who is speaking | `speaker` on each row in `data/sources.json` | Alfa Laval, Distributors, Partners, Websites, Social. The strip shows passed of total for each. |
+| On brand by source | `speaker` on each row in `data/sources.json` | Alfa Laval site, Distributors, Partners, Other websites, Social. The strip shows passed of total for each. |
 | Social only from an approved feed | a new row with `channel` and `speaker` set to `social`, `origin` `live` | The two LinkedIn rows are seeded examples. The card says “Examples only.” |
 
 ## What moves to Databricks

@@ -29,7 +29,7 @@
  *   4. Score is the share of pages that passed,   score.js
  *      in total and per country. Review does not
  *      pass. Passed of total is the only score.
- *   5. Draw that, including who is speaking.      dashboard.js
+ *   5. Draw that, including on brand by source.   dashboard.js
  *      Do not judge here.
  *
  * The design system is the look of this screen only (css/dashboard.css).
