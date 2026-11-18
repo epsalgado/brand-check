@@ -10,9 +10,18 @@
  *
  * Four checks, in the order a brand lead cares about them:
  *   1. Claims   — numbers and certificates the found page asserts
- *   2. Logo     — present, proportions, color, which lockup
- *   3. Color    — fills on the page versus the brand book
+ *   2. Logo     — the Alfa Laval wordmark, only when this page shows it
+ *   3. Color    — fills on Alfa Laval's own site, not a reseller's buttons
  *   4. Language — hype that Alfa Laval's own pages do not use
+ *
+ * Kim's question is: does this company sell an Alfa Laval product, and
+ * where it shows Alfa Laval's logo, is that logo the real one?
+ * A distributor or reseller is its own company. Their own logo on their
+ * own page is not a miss. A missing Alfa Laval wordmark is a miss only
+ * on Alfa Laval's own site (speaker "alfa-laval").
+ * If the page does show the Alfa Laval wordmark, stretched, old, or
+ * recolored is a mismatch. That is the check. Do not flag a site only
+ * because the header is the reseller's own mark.
  *
  * A high-severity flag makes the page a mismatch. Only low flags mean
  * "review". No flags means "on brand".
@@ -99,32 +108,61 @@ function claimsIn(text) {
   return [...new Set(found)];
 }
 
-/** The logo facts were recorded when the page was collected. These rules judge them. */
+/**
+ * Logo facts were recorded when the page was collected.
+ * Wilmer: logo.present false means we did not see the Alfa Laval wordmark.
+ * That is a miss only when speaker is "alfa-laval". On a distributor,
+ * partner, spare-parts site, or social post, their own logo is expected.
+ * When the Alfa Laval wordmark is present, judge that mark: proportions,
+ * current lockup, navy or white. A wrong mark is a mismatch no matter
+ * who the speaker is.
+ */
 function checkLogo(page) {
   const logo = page.logo || {};
   const flags = [];
+  const wordmarkShown = Boolean(logo.present) && logo.lockup !== "missing";
+  let pass = "Matches";
 
-  if (!logo.present || logo.lockup === "missing") {
-    flags.push({ severity: "high", detail: "The Alfa Laval wordmark is missing." });
-  }
-  if (logo.stretched) {
-    flags.push({ severity: "high", detail: "The wordmark is stretched. Alfa Laval uses it at its real proportions." });
-  }
-  if (logo.lockup === "old-wordmark") {
-    flags.push({ severity: "high", detail: "This is an old wordmark, not the current Alfa Laval mark." });
-  }
-  if (logo.lockup === "recolored") {
-    flags.push({ severity: "high", detail: "The wordmark has been recolored. It is navy #0B1128, or white on a dark ground." });
-  } else if (logo.color && !nearPalette(logo.color, LOGO_COLORS, COLOR_TOLERANCE)) {
-    flags.push({ severity: "high", detail: `The wordmark color ${logo.color} is not navy or white.` });
+  if (!wordmarkShown) {
+    if (isAlfaLaval(page)) {
+      flags.push({
+        severity: "high",
+        detail: "The Alfa Laval wordmark is missing from Alfa Laval’s own page."
+      });
+    } else {
+      pass = "No Alfa Laval wordmark on this page. Their own logo is fine. The wordmark is checked only when the page shows it on an Alfa Laval product.";
+    }
+  } else {
+    if (logo.stretched) {
+      flags.push({ severity: "high", detail: "The Alfa Laval wordmark is stretched. Alfa Laval uses it at its real proportions." });
+    }
+    if (logo.lockup === "old-wordmark") {
+      flags.push({ severity: "high", detail: "This is an old Alfa Laval wordmark, not the current mark." });
+    }
+    if (logo.lockup === "recolored") {
+      flags.push({ severity: "high", detail: "The Alfa Laval wordmark has been recolored. It is navy #0B1128, or white on a dark ground." });
+    } else if (logo.color && !nearPalette(logo.color, LOGO_COLORS, COLOR_TOLERANCE)) {
+      flags.push({ severity: "high", detail: `The Alfa Laval wordmark color ${logo.color} is not navy or white.` });
+    }
   }
 
-  return { id: "logo", label: "Logo", flags };
+  return { id: "logo", label: "Logo", flags, pass };
 }
 
-/** Every recorded fill must sit near a color in the brand book. */
+/**
+ * Page colors are judged on Alfa Laval's own site. A reseller's orange
+ * button is their brand, not a miss. Wilmer: do not record a whole
+ * stylesheet. Record a color here only when it is Alfa Laval's own page,
+ * or when it is the color of an Alfa Laval wordmark (that case is the
+ * logo check).
+ */
 function checkColors(page) {
   const flags = [];
+  let pass = "Matches";
+  if (!isAlfaLaval(page)) {
+    pass = "Their own site colors are not checked. Color is checked on Alfa Laval’s own site, and on the Alfa Laval wordmark when a page shows it.";
+    return { id: "color", label: "Color", flags, pass };
+  }
   for (const hex of page.colors || []) {
     if (!nearPalette(hex, PALETTE.map((swatch) => swatch.hex), COLOR_TOLERANCE)) {
       flags.push({
@@ -133,7 +171,11 @@ function checkColors(page) {
       });
     }
   }
-  return { id: "color", label: "Color", flags };
+  return { id: "color", label: "Color", flags, pass };
+}
+
+function isAlfaLaval(page) {
+  return page.speaker === "alfa-laval";
 }
 
 /** Hype is a review item. The product can still be the right product. */

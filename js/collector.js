@@ -36,10 +36,13 @@
  * The LinkedIn rows already in this file are origin "seeded": examples.
  * Four company pages were fetched on 18 Nov 2026 and marked origin "live":
  * Element Engineers, ABK Solution, AEL Heat Exchangers, and Moody Direct.
- * Their logo is "missing" because the page images showed that company's own
- * mark, not the Alfa Laval wordmark. AEL's orange #EA580C is a background
- * color from their own stylesheet. Do not treat a stylesheet dump as the
- * brand colors. Record a color only when it is actually used on the page.
+ * logo.present false means the Alfa Laval wordmark was not in the page
+ * images. That is not a mismatch. They are resellers. Their own logo
+ * belongs on their page. Set logo.present true, and lockup "recolored",
+ * "old-wordmark", or stretched, only when the page shows the Alfa Laval
+ * wordmark and that mark is wrong.
+ * Do not record a reseller's own button colors as a brand miss. AEL's
+ * orange is their site, not Alfa Laval's.
  * country is a country name, or "Worldwide" for Alfa Laval's own global site.
  * url is the address Kim opens. A real https address is a link on the
  * screen. example.com is a written sample and is not linked.

@@ -235,7 +235,7 @@ function openLink(page) {
 
 function renderCheck(check) {
   if (!check.flags.length) {
-    return `<li class="check check-pass"><strong>${escapeHtml(check.label)}</strong><span>Matches</span></li>`;
+    return `<li class="check check-pass"><strong>${escapeHtml(check.label)}</strong><span>${escapeHtml(check.pass || "Matches")}</span></li>`;
   }
   const details = check.flags.map((flag) => `<span>${escapeHtml(flag.detail)}</span>`).join("");
   return `<li class="check check-flag"><strong>${escapeHtml(check.label)}</strong><div>${details}</div></li>`;
