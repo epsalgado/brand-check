@@ -52,6 +52,8 @@ Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and 
 
 `url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
 
+`url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
+
 ## The four checks
 
 1. **Claims.** Numbers like `10 times`, `90%`, `60 bar`, plus phrases in the brand book. A claim passes only when Alfa Laval’s own page for that product already says it.
