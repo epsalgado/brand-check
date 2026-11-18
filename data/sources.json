@@ -104,7 +104,7 @@
       "fetchedAt": "2026-11-18",
       "text": "Element Engineers & Consultants is an Authorized Alfa Laval Distributor in Indore, Madhya Pradesh, supplying Alfa Laval hygienic process equipment and pumps. The Alfa Laval LKH centrifugal pump is a premium hygienic pump designed for efficient transfer of process fluids while helping maintain product quality and process hygiene. The LKH range is for food and beverage, dairy, pharmaceuticals, biotechnology, and home and personal care.",
       "colors": ["#FFFFFF"],
-      "logo": { "present": false, "stretched": false, "color": "", "lockup": "missing" }
+      "logo": { "present": true, "stretched": false, "color": "#FFFFFF", "lockup": "old-wordmark" }
     },
     {
       "id": "abk-compabloc",

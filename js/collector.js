@@ -36,11 +36,15 @@
  * The LinkedIn rows already in this file are origin "seeded": examples.
  * Four company pages were fetched on 18 Nov 2026 and marked origin "live":
  * Element Engineers, ABK Solution, AEL Heat Exchangers, and Moody Direct.
- * logo.present false means the Alfa Laval wordmark was not in the page
+ * logo.present false means the Alfa Laval logo was not in the page
  * images. That is not a mismatch. They are resellers. Their own logo
  * belongs on their page. Set logo.present true, and lockup "recolored",
  * "old-wordmark", or stretched, only when the page shows the Alfa Laval
- * wordmark and that mark is wrong.
+ * logo and that mark is wrong.
+ * Element is the exception in this file. Their product panel shows the
+ * old Authorized Distributor plaque (name stacked on two lines, older
+ * blue). That is logo.present true and lockup "old-wordmark", a mismatch.
+ * Their own ELEMENT header is not the miss.
  * Do not record a reseller's own button colors as a brand miss. AEL's
  * orange is their site, not Alfa Laval's.
  * country is a country name, or "Worldwide" for Alfa Laval's own global site.

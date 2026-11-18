@@ -137,7 +137,10 @@ function checkLogo(page) {
       flags.push({ severity: "high", detail: "The Alfa Laval wordmark is stretched. Alfa Laval uses it at its real proportions." });
     }
     if (logo.lockup === "old-wordmark") {
-      flags.push({ severity: "high", detail: "This is an old Alfa Laval wordmark, not the current mark." });
+      flags.push({
+        severity: "high",
+        detail: "This is the old Alfa Laval logo. The name is stacked on two lines. The current logo is one line, ALFA LAVAL, with the curve above the name, in navy or white."
+      });
     }
     if (logo.lockup === "recolored") {
       flags.push({ severity: "high", detail: "The Alfa Laval wordmark has been recolored. It is navy #0B1128, or white on a dark ground." });
