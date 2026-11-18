@@ -6,8 +6,8 @@
  * read on 18 Nov 2026. Their own typeface is "Alfa Laval"; the site falls
  * back to Roboto, and so does this dashboard.
  *
- * This file is the place to change a rule. The analyzer only reads these
- * lists. It does not invent brand rules of its own.
+ * These lists are the Brand Hub stand-in. When the hub is connected, its
+ * guidelines replace this file. The analyzer only reads these lists.
  */
 
 /** Colors that appear on the public site. A found color may sit near one of these. */

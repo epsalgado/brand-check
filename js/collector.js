@@ -13,8 +13,12 @@
  * like. The dashboard stays.
  *
  * Page snapshot shape:
- *   id, origin ("live" or "seeded"), sourceType, title, url, fetchedAt,
- *   text, colors (array of #RRGGBB), logo { present, stretched, color, lockup }
+ *   id, origin ("live" or "seeded"), channel, sourceType, country, site,
+ *   title, url, fetchedAt, text, colors (array of #RRGGBB),
+ *   logo { present, stretched, color, lockup }
+ * channel is "website", "social", or "other". Social rows arrive only from
+ * a feed Alfa Laval has approved. country is a country name, or "Worldwide"
+ * for Alfa Laval's own global site. site is the website name.
  * lockup is one of: official-wordmark, recolored, old-wordmark, missing.
  */
 

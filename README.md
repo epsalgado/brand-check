@@ -10,11 +10,16 @@ Start at `js/main.js`. It runs the product in order:
 
 | Step | File | What it does |
 | --- | --- | --- |
-| Rules | `js/brand-book.js` | Allowed colors, logo colors, hype words, claim phrases. Change a rule here. |
-| Catalogue | `js/catalogue.js` | Loads `data/products.json` (375 Alfa Laval product pages) and finds which product names appear in a text. |
-| Collect | `js/collector.js` | Loads `data/sources.json`. Each record is one found page: text, colors, logo facts. |
-| Analyze | `js/analyzer.js` | Compares one page with the catalogue and the brand book. Returns a report. |
-| Show | `js/dashboard.js` | Draws the counts, the queue, and the open case. It does not decide the verdict. |
+| Brand Hub | `js/brand-hub.js` | The correct Alfa Laval version. Today this is a stand-in: the public product catalogue. When their hub connects, only this file changes. |
+| Rules | `js/brand-book.js` | Colors, logo colors, hype words, claim phrases. These rules are the hub stand-in. |
+| Catalogue | `js/catalogue.js` | Loads `data/products.json` (375 product pages) and finds which product names appear in a text. |
+| Collect | `js/collector.js` | Loads `data/sources.json`. Each record is one found page: channel, country, site, text, colors, logo facts. |
+| Brand Agent | `js/brand-agent.js` | Judges one page. Returns On brand, Review, or Mismatch, plus the reason. Today the local check is the stand-in. |
+| Check | `js/analyzer.js` | The stand-in judgment: claims, logo, color, language. |
+| Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed: 3 of 6 is 50%. |
+| Show | `js/dashboard.js` | Draws the score, the three connections, the queue, and the open case. It does not decide the verdict. |
+
+The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
 `index.html` is the shell. `css/dashboard.css` is the Alfa Laval visual system from the public site: navy `#0B1128`, blue `#0068FF`, warm gray `#F5F3F2`, Roboto.
 
@@ -46,9 +51,22 @@ Add a page by appending to `data/sources.json`. The analyzer and the dashboard d
 
 High flags make a **Mismatch**. Only language flags make a **Review**. No flags means **On brand**.
 
+## If Friday is a yes
+
+The screen already has a slot for each approval:
+
+| Approval | Where it plugs in | What the screen says today |
+| --- | --- | --- |
+| Brand Hub is the correct version | `js/brand-hub.js` | Stand-in. The public catalogue fills it. |
+| Brand Agent returns On brand, Review, or Mismatch, with the reason | `js/brand-agent.js` | Stand-in. The four checks fill the same answer. |
+| Design system is only the look | `css/dashboard.css` | Already the look. It is not a check. |
+| Score is the share that passed, in total and per country | `js/score.js` | 3 of 6, and the same split on each country chip. |
+| Collect websites now | `data/sources.json`, `channel: "website"` | Six website pages are in the run. |
+| Social only from an approved feed | a new row with `channel: "social"` | The social card says Waiting. No feed is invented. |
+
 ## What moves to Databricks
 
-`collector.js` is the piece that changes. A scheduled job fetches real pages and fills the same fields, including logo and color from a vision step. `analyzer.js` can be rewritten in SQL against the same rules. The dashboard still reads reports with `verdict`, `checks`, and `flags`.
+`collector.js` is the piece that changes. A scheduled job fetches real pages and fills the same fields, including logo and color from a vision step. `brand-hub.js` then reads their hub, and `brand-agent.js` calls their agent. The dashboard still reads `verdict`, `checks`, and `flags`.
 
 ## Run it
 
