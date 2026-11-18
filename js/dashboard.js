@@ -56,14 +56,14 @@ function renderCounts(reports) {
     mismatch: reports.filter((report) => report.verdict === "mismatch").length
   };
   document.getElementById("kpis").innerHTML = `
-    ${kpi("Collected", counts.collected, "Pages in this run")}
-    ${kpi("On brand", counts.onBrand, "Matches Alfa Laval")}
-    ${kpi("Review", counts.review, "Language only")}
-    ${kpi("Mismatches", counts.mismatch, "Open alerts")}`;
+    ${kpi("Collected", counts.collected, "Pages in this run", "navy")}
+    ${kpi("On brand", counts.onBrand, "Matches Alfa Laval", "blue")}
+    ${kpi("Review", counts.review, "Language only", "deep")}
+    ${kpi("Mismatches", counts.mismatch, "Open alerts", "bright")}`;
 }
 
-function kpi(label, value, note) {
-  return `<article class="kpi"><p>${escapeHtml(label)}</p><strong>${value}</strong><span>${escapeHtml(note)}</span></article>`;
+function kpi(label, value, note, tone) {
+  return `<article class="kpi kpi-${tone}"><p>${escapeHtml(label)}</p><strong>${value}</strong><span>${escapeHtml(note)}</span></article>`;
 }
 
 function renderQueue(reports) {
@@ -122,7 +122,7 @@ function renderCheck(check) {
     return `<li class="check check-pass"><strong>${escapeHtml(check.label)}</strong><span>Matches</span></li>`;
   }
   const details = check.flags.map((flag) => `<span>${escapeHtml(flag.detail)}</span>`).join("");
-  return `<li class="check check-flag"><strong>${escapeHtml(check.label)}</strong>${details}</li>`;
+  return `<li class="check check-flag"><strong>${escapeHtml(check.label)}</strong><div>${details}</div></li>`;
 }
 
 function excerpt(text, max) {
