@@ -1,0 +1,71 @@
+{
+  "note": "Each item is one page the monitor has collected. origin live means the text came from a real Alfa Laval page on 18 Nov 2026. origin seeded means we wrote the page so the team can see a mismatch on purpose. A Databricks job will replace this file with pages gathered from the web.",
+  "pages": [
+    {
+      "id": "maxilobe-official",
+      "origin": "live",
+      "sourceType": "Alfa Laval site",
+      "title": "MaxiLobe rotary lobe pumps",
+      "url": "https://www.alfalaval.com/products/fluid-handling/pumps/rotary-lobe-pumps/maxilobe/",
+      "fetchedAt": "2026-11-18",
+      "text": "Get more from every production run with the Alfa Laval MaxiLobe hygienic rotary lobe pumps. Engineered for higher efficiency, a broader operating range, and simplified maintenance, MaxiLobe helps reduce investment and operating costs while boosting yield. Reliable performance across varying process conditions supports more uptime, consistent product quality, and lower total cost of ownership across dairy, food, beverage, and home and personal care applications.",
+      "colors": ["#0B1128", "#0068FF", "#FFFFFF", "#F5F3F2"],
+      "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    },
+    {
+      "id": "compabloc-official",
+      "origin": "live",
+      "sourceType": "Alfa Laval site",
+      "title": "Compabloc heat exchangers",
+      "url": "https://www.alfalaval.com/products/heat-transfer/plate-heat-exchangers/welded-plate-and-block-heat-exchangers/compabloc/",
+      "fetchedAt": "2026-11-18",
+      "text": "With over 30,000 units handling tough duties worldwide, Compabloc is the market champion when it comes to heat transfer. Its compact design has been engineered for superior reliability and performance, making it easy to both service and install. The Compabloc family is 3-5 times more efficient than traditional shell-and-tube solutions and secures safe operation of up to 60 bar.",
+      "colors": ["#0B1128", "#0068FF", "#FFFFFF"],
+      "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    },
+    {
+      "id": "pureballast-official",
+      "origin": "live",
+      "sourceType": "Alfa Laval site",
+      "title": "PureBallast 3",
+      "url": "https://www.alfalaval.com/products/process-solutions/ballast-water-management-system/pureballast-3/",
+      "fetchedAt": "2026-11-18",
+      "text": "Alfa Laval PureBallast 3 is an automated inline ballast water management system for biological disinfection of ballast water. Operating without chemicals, it combines initial filtration with UV treatment to remove organisms in accordance with stipulated limits. The technology offers unmatched ballast water treatment performance in any type of water: fresh, brackish or marine.",
+      "colors": ["#0B1128", "#0068FF", "#545869"],
+      "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    },
+    {
+      "id": "distributor-compabloc",
+      "origin": "seeded",
+      "sourceType": "Distributor page",
+      "title": "Northline Process — Compabloc offer",
+      "url": "https://example.com/northline-compabloc",
+      "fetchedAt": "2026-11-18",
+      "text": "Amazing deal on the Alfa Laval Compabloc. This game-changer is 10 times more efficient than a shell-and-tube and is food-grade certified for any dairy plant. Cheapest Compabloc on the market.",
+      "colors": ["#E87722", "#111111", "#FFFFFF"],
+      "logo": { "present": true, "stretched": true, "color": "#E87722", "lockup": "recolored" }
+    },
+    {
+      "id": "spare-parts-lkh",
+      "origin": "seeded",
+      "sourceType": "Spare parts listing",
+      "title": "Bargain Spares — LKH pump",
+      "url": "https://example.com/bargain-lkh",
+      "fetchedAt": "2026-11-18",
+      "text": "Genuine Alfa Laval LKH pump. Food-grade certified and delivers 90% energy savings versus any other hygienic pump. The cheapest LKH online, guaranteed miracle performance.",
+      "colors": ["#6D28D9", "#F5F3F2"],
+      "logo": { "present": false, "stretched": false, "color": "", "lockup": "missing" }
+    },
+    {
+      "id": "partner-maxilobe",
+      "origin": "seeded",
+      "sourceType": "Partner post",
+      "title": "Harbour Hygienic — MaxiLobe note",
+      "url": "https://example.com/harbour-maxilobe",
+      "fetchedAt": "2026-11-18",
+      "text": "We installed Alfa Laval MaxiLobe rotary lobe pumps on a dairy line. They are hygienic, built for higher efficiency, and used across dairy, food, beverage, and home and personal care. Customers keep telling us it is an amazing upgrade.",
+      "colors": ["#0B1128", "#0068FF", "#FFFFFF"],
+      "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    }
+  ]
+}

@@ -3,46 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Brand check — Round Two</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Brand consistency monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-  <header class="top">
-    <p class="kicker">Round Two · Alfa Laval hackathon</p>
-    <h1>Brand check</h1>
-    <p class="lede">Look up what Alfa Laval actually says about a product, or paste an outside paragraph and see where it drifts.</p>
+  <!--
+    One screen for the brief: collect, analyze, flag.
+    The wordmark is Alfa Laval's public logo, so the demo sits in their visual system.
+    Behavior starts in js/main.js.
+  -->
+  <header class="mast">
+    <div class="mast-brand">
+      <img src="assets/alfa-laval-logo.svg" alt="Alfa Laval" width="140" height="40">
+      <div>
+        <p class="product-name">Brand consistency monitor</p>
+        <p class="product-team">Round Two</p>
+      </div>
+    </div>
+    <button type="button" id="scan">Scan collected pages</button>
   </header>
 
   <main>
-    <section class="panel" id="lookup">
-      <h2>Look up their words</h2>
-      <form id="search-form" class="row">
-        <label class="grow" for="q">Product or phrase</label>
-        <input id="q" name="q" type="search" placeholder="Try MaxiLobe, Compabloc, PureBallast" autocomplete="off">
-        <button type="submit">Search</button>
-      </form>
-      <p class="hint" id="search-hint">375 products from Alfa Laval’s public site, pulled 18 Nov 2026.</p>
-      <div id="search-results" class="results"></div>
-    </section>
+    <p class="run-note" id="run-note">Loading the catalogue…</p>
+    <section class="kpis" id="kpis" aria-label="This run"></section>
 
-    <section class="panel" id="check">
-      <h2>Check an outside text</h2>
-      <p class="hint">Paste a distributor page, a listing, or a post. The check looks for real product names, then compares the numbers and claims with Alfa Laval’s own page.</p>
-      <div class="examples">
-        <button type="button" id="example-match">Try a close match</button>
-        <button type="button" id="example-drift" class="ghost">Try a drift</button>
+    <section class="board">
+      <div class="queue-wrap">
+        <h2>Collected pages</h2>
+        <div class="queue-head" aria-hidden="true">
+          <span>Page</span><span>Source</span><span>Result</span><span>Flags</span>
+        </div>
+        <div id="queue"></div>
       </div>
-      <textarea id="outside" rows="8" placeholder="Paste the outside text here"></textarea>
-      <div class="row end">
-        <button type="button" id="run-check">Check against Alfa Laval</button>
-      </div>
-      <div id="check-results" class="results"></div>
+      <article class="case" id="case">
+        <p>Select a collected page.</p>
+      </article>
     </section>
   </main>
 
-  <footer>
-    <p>This reads Alfa Laval’s public product pages so a person can compare. It does not speak for Alfa Laval, and a person still decides what to do about a mismatch.</p>
-  </footer>
-  <script src="app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

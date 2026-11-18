@@ -1,0 +1,225 @@
+/*
+  Visual system taken from alfalaval.com on 18 Nov 2026.
+  Navy #0B1128, blue #0068FF, warm gray #F5F3F2, type Roboto
+  (their own face is the proprietary Alfa Laval font; Roboto is the fallback
+  the public site already names).
+*/
+
+:root {
+  --navy: #0b1128;
+  --blue: #0068ff;
+  --blue-pressed: #004ab5;
+  --ink: #3c3c3c;
+  --muted: #545869;
+  --paper: #f5f3f2;
+  --line: #e6e3df;
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--navy);
+  background: var(--paper);
+  font: 16px/1.5 Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.mast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 28px;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+}
+
+.mast-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.mast img { display: block; height: 32px; width: auto; }
+
+.product-name,
+.product-team { margin: 0; }
+
+.product-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.product-team {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+button {
+  border: 0;
+  border-radius: 2px;
+  padding: 12px 18px;
+  background: var(--blue);
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover { background: var(--blue-pressed); }
+button:disabled { opacity: 0.7; cursor: progress; }
+
+main {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+}
+
+.run-note {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.kpi {
+  padding: 16px 18px 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.kpi p,
+.kpi span { margin: 0; color: var(--muted); font-size: 13px; }
+.kpi strong {
+  display: block;
+  margin: 4px 0;
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 0.9fr 1.2fr;
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+.queue-wrap,
+.case {
+  background: var(--white);
+  border: 1px solid var(--line);
+  padding: 18px;
+}
+
+h2, h3 { margin: 0 0 12px; font-size: 20px; font-weight: 700; }
+
+.queue-head,
+.queue-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1.1fr auto 36px;
+  gap: 8px;
+  align-items: center;
+}
+
+.queue-head {
+  padding: 0 10px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.queue-row {
+  width: 100%;
+  margin: 0 0 6px;
+  padding: 10px;
+  text-align: left;
+  background: var(--white);
+  color: var(--navy);
+  border: 1px solid transparent;
+  font-weight: 400;
+}
+
+.queue-row:hover { background: var(--paper); }
+.queue-row.is-selected { border-color: var(--blue); background: #f3f7ff; }
+
+.queue-title { font-weight: 700; }
+.queue-type { color: var(--muted); font-size: 13px; }
+.queue-count { text-align: right; color: var(--muted); }
+
+.pill {
+  justify-self: start;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.pill-on-brand { background: #e7f6ee; color: #146c43; }
+.pill-review { background: #fff4e5; color: #8a4b08; }
+.pill-mismatch { background: #fdecea; color: #9f1d1d; }
+
+.case-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case-meta { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+.checks { list-style: none; margin: 16px 0; padding: 0; }
+.check {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+}
+.check strong { font-size: 14px; }
+.check span { display: block; color: var(--ink); }
+.check-pass span { color: #146c43; }
+
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.compare section {
+  padding: 14px;
+  background: var(--paper);
+}
+.compare h3 { font-size: 15px; }
+.compare p { margin: 0 0 10px; color: var(--ink); }
+.compare a { color: var(--blue); font-weight: 700; font-size: 14px; }
+
+body.is-scanning .case,
+body.is-scanning .queue-wrap { opacity: 0.55; }
+
+@media (max-width: 900px) {
+  .kpis, .board, .compare, .queue-head { grid-template-columns: 1fr; }
+  .queue-head { display: none; }
+  .mast { align-items: flex-start; flex-direction: column; }
+}
