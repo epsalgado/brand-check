@@ -20,7 +20,7 @@
  * and the dashboard read those fields. They should not learn a new shape.
  */
 
-import { loadCatalogue } from "./catalogue.js";
+import { loadCatalogue } from "./catalogue.js?v=4";
 
 export async function loadBrandHub() {
   const catalogue = await loadCatalogue();

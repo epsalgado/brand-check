@@ -19,7 +19,7 @@
  * No flags is On brand.
  */
 
-import { analyzePage } from "./analyzer.js";
+import { analyzePage } from "./analyzer.js?v=4";
 
 export function judgePage(page, hub) {
   const report = analyzePage(page, hub.catalogue);

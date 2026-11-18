@@ -40,11 +40,11 @@
  * stand-in in the file named above and leave the call shape alone.
  */
 
-import { loadBrandHub } from "./brand-hub.js";
-import { collectPages } from "./collector.js";
-import { judgePage } from "./brand-agent.js";
-import { scoreRun } from "./score.js";
-import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js";
+import { loadBrandHub } from "./brand-hub.js?v=4";
+import { collectPages } from "./collector.js?v=4";
+import { judgePage } from "./brand-agent.js?v=4";
+import { scoreRun } from "./score.js?v=4";
+import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js?v=4";
 
 async function start() {
   const hub = await loadBrandHub();

@@ -36,8 +36,8 @@ import {
   LOGO_COLORS,
   HYPE_WORDS,
   CLAIM_PHRASES
-} from "./brand-book.js";
-import { findMentions, normalize } from "./catalogue.js";
+} from "./brand-book.js?v=4";
+import { findMentions, normalize } from "./catalogue.js?v=4";
 
 /**
  * @param {object} page  One snapshot from the collector.
