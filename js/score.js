@@ -1,9 +1,14 @@
 /**
  * Score
  * -----
- * "On brand in total" and "per country" are the share of pages that
- * passed. Passed means the verdict is On brand. Review and Mismatch
- * do not pass. 3 of 6 is 50%. There is no separate 80% similarity.
+ * Kim asked for "how on-brand are we in total, per country". He said the
+ * real numbers need Alfa Laval's closed systems. Those systems are not
+ * connected. Wilmer: this file is the score. Change it only if Kim changes
+ * what counts as passed. Do not invent a similarity percent.
+ *
+ * The score is the share of pages that passed. Passed means the verdict
+ * is On brand. Review and Mismatch do not pass. 3 of 6 is 50%. The same
+ * count is repeated for each country on the page.
  */
 
 export function scoreRun(reports) {

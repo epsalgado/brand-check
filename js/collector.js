@@ -3,14 +3,20 @@
  * ---------
  * Gathers the pages the monitor should look at.
  *
- * Today it reads snapshots in data/sources.json. Some were copied from
- * Alfa Laval's own site. Some were written by the team so a mismatch is
- * visible in the room. Every snapshot has the same shape, so the analyzer
- * does not care which is which.
+ * Kim's first task is to gather the data. He has not said a social scrape
+ * is allowed, because a scrape includes personal data. Wilmer: add public
+ * company pages here (distributor sites, spare-part shops, news). Add a
+ * social row only when Kim names an approved feed, and set channel to
+ * "social". Do not invent a feed.
  *
- * On Databricks this module goes away. A scheduled job will fetch real
- * pages and write the same fields: text, colors, and what the logo looked
- * like. The dashboard stays.
+ * Today this reads snapshots in data/sources.json. Some were copied from
+ * Alfa Laval's own site. Some were written by the team so a mismatch is
+ * visible in the room. Every snapshot has the same shape.
+ *
+ * On Databricks a scheduled job replaces this file and writes the same
+ * fields. The dashboard stays. Git can move this code into a Databricks
+ * Git folder and back. The collected rows themselves live in tables, not
+ * in the git push.
  *
  * Page snapshot shape:
  *   id, origin ("live" or "seeded"), channel, sourceType, country, site,

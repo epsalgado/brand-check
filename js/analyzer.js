@@ -1,6 +1,10 @@
 /**
  * Analyzer
  * --------
+ * Stand-in for the Brand Agent. Wilmer: brand-agent.js calls this.
+ * When the real agent returns a verdict and reasons, stop calling this
+ * from judgePage(). Leave the file until that answer matches these checks.
+ *
  * Takes one collected page plus the product catalogue, and returns a report.
  * The report is what the dashboard draws. Nothing in here touches the page.
  *

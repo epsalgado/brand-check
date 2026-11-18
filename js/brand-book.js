@@ -1,13 +1,15 @@
 /**
  * Brand book
  * ----------
- * The rules we compare a found page against.
+ * NOT CONNECTED to the Brand Hub. Wilmer: these lists are the rules the
+ * stand-in check uses. When the hub MCP returns the real guidelines,
+ * replace the lists here, or stop reading this file from the analyzer.
+ *
  * Colors and the wordmark come from Alfa Laval's public site (alfalaval.com),
  * read on 18 Nov 2026. Their own typeface is "Alfa Laval"; the site falls
  * back to Roboto, and so does this dashboard.
  *
- * These lists are the Brand Hub stand-in. When the hub is connected, its
- * guidelines replace this file. The analyzer only reads these lists.
+ * The analyzer only reads these lists. It does not invent rules.
  */
 
 /** Colors that appear on the public site. A found color may sit near one of these. */

@@ -1,9 +1,14 @@
 /**
  * Dashboard
  * ---------
- * Draws one screen: the score, the connected systems, the queue, and the
- * open case. It does not decide what is on brand. That decision is already
- * on the report from brand-agent.js. This file only presents it.
+ * Draws one screen: the score, the connection cards, the queue, and the
+ * open case. Wilmer: do not put a new brand rule in this file. The Brand
+ * Agent already decided. This file only presents verdict, reasons, and the
+ * pass share from score.js.
+ *
+ * The cards say Stand-in or Waiting on purpose. Brand Hub, Brand Agent,
+ * and the social feed are not connected. The websites card counts pages
+ * whose channel is not "social".
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.

@@ -1,5 +1,5 @@
 {
-  "note": "Each item is one page the monitor has collected. origin live means the text came from a real Alfa Laval page on 18 Nov 2026. origin seeded means we wrote the page so the team can see a mismatch on purpose. A Databricks job will replace this file with pages gathered from the web.",
+  "note": "Each item is one page the monitor has collected. origin live means the text came from a real Alfa Laval page on 18 Nov 2026. origin seeded means we wrote the page so the team can see a mismatch on purpose. channel website is a public company page and is allowed in this run. channel social is only for a feed Kim Gustafsson has approved. None is approved yet, so this file has no social rows. A Databricks job will replace this file with pages gathered from the web. Do not add personal profiles.",
   "pages": [
     {
       "id": "maxilobe-official",

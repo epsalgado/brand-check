@@ -2,7 +2,9 @@
 
 Round Two. One screen that collects pages, compares them with Alfa Laval’s own product wording and brand rules, and flags what does not match.
 
-The public page is the prototype. The same four steps move to Databricks later. The screen can stay.
+The public page is the prototype. Wilmer: start at the header in `js/main.js`. It records what Kim asked for on 18 Nov 2026 and which file to edit. Brand Hub, Brand Agent, the design-system MCP, and the closed systems behind the country score are not connected. The code marks each one as a stand-in.
+
+GitHub and Databricks can exchange this repo both ways. A push here is pulled into a Databricks Git folder. A commit there can be pushed back. Collected pages and scores live in Databricks tables, not in the git files.
 
 ## What a coder walks through
 

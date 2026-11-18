@@ -1,13 +1,35 @@
 /**
  * Main
  * ----
- * Starts the monitor. The order is the whole product:
- *   1. Open the Brand Hub (stand-in until theirs connects).  brand-hub.js
- *   2. Collect the pages to look at.                         collector.js
- *   3. Ask the Brand Agent to judge each page.              brand-agent.js
- *   4. Draw the score, the countries, and the open case.    dashboard.js
+ * Starts the monitor. Wilmer: read this header, then the file it names.
  *
- * The design system is the look of this screen only. It is not a check.
+ * Kim Gustafsson (Global Digital Brand Lead), 18 Nov 2026:
+ *   - First task is to gather the data. He does not yet know which social
+ *     posts may be fetched, because a scrape includes personal data.
+ *   - He wants "how on-brand are we in total, per country". That score
+ *     needs Alfa Laval's closed systems.
+ *   - The Brand Hub holds the guidelines and assets, through an MCP.
+ *   - The Brand Agent can create on-brand content, and its judgment can
+ *     be reached too. Gautam (AI solutions manager) owns that connection.
+ *   - The Digital Design System, also through an MCP, is for the UI.
+ *   - Their brand AI can be connected to Databricks.
+ *
+ * What this repo aims to do with that:
+ *   1. Brand Hub is the correct version.          brand-hub.js   NOT CONNECTED
+ *   2. Collect public websites now.               collector.js
+ *      Social waits for a feed Kim approves.
+ *   3. Brand Agent returns On brand, Review, or   brand-agent.js NOT CONNECTED
+ *      Mismatch, and names the reason.
+ *   4. Score is the share of pages that passed,   score.js
+ *      in total and per country. 3 of 6 is 50%.
+ *   5. Draw that. Do not judge here.              dashboard.js
+ *
+ * The design system is the look of this screen only (css/dashboard.css).
+ * It is not a check.
+ *
+ * Nothing from Alfa Laval's hub, agent, design-system MCP, or closed
+ * systems is connected. Each stand-in says so on the screen. Replace the
+ * stand-in in the file named above and leave the call shape alone.
  */
 
 import { loadBrandHub } from "./brand-hub.js";

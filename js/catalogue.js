@@ -3,7 +3,10 @@
  * ---------
  * Alfa Laval's own product pages, saved in data/products.json.
  * Each record has the name, the family, the official link, and the words
- * Alfa Laval wrote. The analyzer uses those words as the authentic version.
+ * Alfa Laval wrote. The stand-in Brand Hub loads this file. The analyzer
+ * uses those words as the authentic version until the hub MCP is connected.
+ * Wilmer: a hub connection replaces the source in brand-hub.js. The name-
+ * matching rules in this file can stay.
  *
  * findMentions() answers one question: which catalogue names appear in a
  * piece of outside text? Longer names win when they cover the same words,

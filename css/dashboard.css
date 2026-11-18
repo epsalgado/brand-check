@@ -1,5 +1,10 @@
 /*
-  Visual system taken from alfalaval.com on 18 Nov 2026.
+  Look of the screen only. This is not a brand check.
+  Kim offered the Digital Design System, through an MCP, for the UI.
+  That MCP is not connected. Wilmer: when it is, replace these tokens
+  with the values it returns. Do not add claim, logo, or score rules here.
+
+  Tokens taken from alfalaval.com on 18 Nov 2026.
   Navy #0B1128, blue #0068FF, warm gray #F5F3F2, type Roboto
   (their own face is the proprietary Alfa Laval font; Roboto is the fallback
   the public site already names).
