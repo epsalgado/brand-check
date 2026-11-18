@@ -28,6 +28,11 @@
  * A flag is one specific problem. The queue count is report.flags.length.
  * The open case numbers those same flags 1, 2, 3 so the count can be
  * matched to a line. Do not merge two problems into one sentence.
+ * A row is New until Kim clicks it. The click is stored in this browser
+ * under "brand-check-seen". A page he has not opened stays shaded, bold,
+ * and labeled New. Opening the case on load does not clear New. Urgent
+ * and In progress wait until Kim asks for them. On Databricks, store
+ * seen in the table so it follows him to another computer.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
@@ -59,6 +64,8 @@ const SPEAKER_ROW = {
 };
 
 let selectedId = "";
+const SEEN_KEY = "brand-check-seen";
+let seenIds = loadSeen();
 
 export function renderDashboard(reports, context) {
   if (!selectedId || !reports.some((report) => report.page.id === selectedId)) {
@@ -83,6 +90,7 @@ export function bindDashboard(reports, context, onScan) {
     const row = event.target.closest("[data-id]");
     if (!row) return;
     selectedId = row.dataset.id;
+    markSeen(selectedId);
     renderDashboard(reports, context);
   });
 }
@@ -165,12 +173,34 @@ function renderCoverage(score) {
     <ul>${chips}</ul>`;
 }
 
+function loadSeen() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
+    return new Set(Array.isArray(saved) ? saved : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function markSeen(id) {
+  if (!id || seenIds.has(id)) return;
+  seenIds.add(id);
+  try {
+    localStorage.setItem(SEEN_KEY, JSON.stringify([...seenIds]));
+  } catch {
+    // This browser blocked storage. The mark still clears until reload.
+  }
+}
+
 function renderQueue(reports) {
   const rows = reports.map((report) => {
     const selected = report.page.id === selectedId ? " is-selected" : "";
+    const isNew = !seenIds.has(report.page.id);
+    const fresh = isNew ? " is-new" : "";
+    const mark = isNew ? `<span class="new-mark">New</span>` : "";
     return `
-      <div class="queue-row${selected}" data-id="${escapeHtml(report.page.id)}">
-        <span class="queue-title">${escapeHtml(report.page.title)}<span class="queue-where">${whereLineHtml(report.page)}</span></span>
+      <div class="queue-row${selected}${fresh}" data-id="${escapeHtml(report.page.id)}">
+        <span class="queue-title">${mark}${escapeHtml(report.page.title)}<span class="queue-where">${whereLineHtml(report.page)}</span></span>
         <span class="queue-type">${escapeHtml(sourceLine(report.page))}</span>
         <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
         <span class="queue-count">${flagCount(report.flags.length)}</span>

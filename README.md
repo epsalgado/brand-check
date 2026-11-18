@@ -46,6 +46,8 @@ The design system is the look of the screen only (`css/dashboard.css`). It is no
 
 `origin` is `live` (copied on 18 Nov 2026) or `seeded` (written so the result is obvious). `lockup` is `official-wordmark`, `recolored`, `old-wordmark`, or `missing`. `logo.ground` is the measured blue behind the logo. `logo.image` is a file under `assets/` shown beside the Brand Hub logo when that check fails.
 
+A collected row stays marked **New** until Kim clicks it. The mark is shaded, bold, and labeled. This browser remembers the click. A page added later shows **New** again. Opening the case on load does not clear it. Urgent and In progress are not on the screen until Kim asks for them.
+
 `speaker` is the source group on the screen, under **On brand by source**. It is not a person talking. Use only `alfa-laval`, `distributor`, `partner`, `website`, or `social`. A partner is a company that works with Alfa Laval and is not their own site and not a distributor. Partners are still checked. Do not mark one on brand because of the relationship.
 
 Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and the dashboard do not need a code change. A social row with `origin` `live` waits until Kim names an approved feed. The LinkedIn rows already in the file are `seeded` examples.
