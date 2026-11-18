@@ -16,13 +16,21 @@
  *
  * What this repo aims to do with that:
  *   1. Brand Hub is the correct version.          brand-hub.js   NOT CONNECTED
- *   2. Collect public websites now.               collector.js
- *      Social waits for a feed Kim approves.
+ *   2. Collect pages and tag who is speaking.     collector.js
+ *      speaker: alfa-laval, distributor, partner,
+ *      website (other sites, such as spare parts),
+ *      or social. Social "live" waits for a feed
+ *      Kim approves. The two LinkedIn rows are
+ *      written samples, origin "seeded".
  *   3. Brand Agent returns On brand, Review, or   brand-agent.js NOT CONNECTED
  *      Mismatch, and names the reason.
+ *      A partner is judged the same way. Do not
+ *      assume a partner is on brand.
  *   4. Score is the share of pages that passed,   score.js
- *      in total and per country. 3 of 6 is 50%.
- *   5. Draw that. Do not judge here.              dashboard.js
+ *      in total and per country. Review does not
+ *      pass. Passed of total is the only score.
+ *   5. Draw that, including who is speaking.      dashboard.js
+ *      Do not judge here.
  *
  * The design system is the look of this screen only (css/dashboard.css).
  * It is not a check.

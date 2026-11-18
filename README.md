@@ -15,11 +15,11 @@ Start at `js/main.js`. It runs the product in order:
 | Brand Hub | `js/brand-hub.js` | The correct Alfa Laval version. Today this is a stand-in: the public product catalogue. When their hub connects, only this file changes. |
 | Rules | `js/brand-book.js` | Colors, logo colors, hype words, claim phrases. These rules are the hub stand-in. |
 | Catalogue | `js/catalogue.js` | Loads `data/products.json` (375 product pages) and finds which product names appear in a text. |
-| Collect | `js/collector.js` | Loads `data/sources.json`. Each record is one found page: channel, country, site, text, colors, logo facts. |
+| Collect | `js/collector.js` | Loads `data/sources.json`. Each record is one found page: speaker, channel, country, site, text, colors, logo facts. |
 | Brand Agent | `js/brand-agent.js` | Judges one page. Returns On brand, Review, or Mismatch, plus the reason. Today the local check is the stand-in. |
 | Check | `js/analyzer.js` | The stand-in judgment: claims, logo, color, language. |
-| Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed: 3 of 6 is 50%. |
-| Show | `js/dashboard.js` | Draws the score, the three connections, the queue, and the open case. It does not decide the verdict. |
+| Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed. Review does not pass. |
+| Show | `js/dashboard.js` | Draws the score, who is speaking, the queue, and the open case. It does not decide the verdict. |
 
 The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
@@ -31,7 +31,11 @@ The design system is the look of the screen only (`css/dashboard.css`). It is no
 {
   "id": "distributor-compabloc",
   "origin": "seeded",
+  "channel": "website",
   "sourceType": "Distributor page",
+  "speaker": "distributor",
+  "country": "United States",
+  "site": "northlineprocess.com",
   "title": "Northline Process — Compabloc offer",
   "url": "https://example.com/northline-compabloc",
   "text": "The words on the page",
@@ -40,9 +44,11 @@ The design system is the look of the screen only (`css/dashboard.css`). It is no
 }
 ```
 
-`origin` is `live` (copied from alfalaval.com) or `seeded` (written so the mismatch is obvious). `lockup` is `official-wordmark`, `recolored`, `old-wordmark`, or `missing`.
+`origin` is `live` (copied from alfalaval.com) or `seeded` (written so the result is obvious). `lockup` is `official-wordmark`, `recolored`, `old-wordmark`, or `missing`.
 
-Add a page by appending to `data/sources.json`. The analyzer and the dashboard do not need a code change.
+`speaker` is required. Use only `alfa-laval`, `distributor`, `partner`, `website`, or `social`. A partner is a company that works with Alfa Laval and is not their own site and not a distributor. Partners are still checked. Do not mark one on brand because of the relationship.
+
+Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and the dashboard do not need a code change. A social row with `origin` `live` waits until Kim names an approved feed. The LinkedIn rows already in the file are `seeded` examples.
 
 ## The four checks
 
@@ -62,9 +68,9 @@ The screen already has a slot for each approval:
 | Brand Hub is the correct version | `js/brand-hub.js` | Stand-in. The public catalogue fills it. |
 | Brand Agent returns On brand, Review, or Mismatch, with the reason | `js/brand-agent.js` | Stand-in. The four checks fill the same answer. |
 | Design system is only the look | `css/dashboard.css` | Already the look. It is not a check. |
-| Score is the share that passed, in total and per country | `js/score.js` | 3 of 6, and the same split on each country chip. |
-| Collect websites now | `data/sources.json`, `channel: "website"` | Six website pages are in the run. |
-| Social only from an approved feed | a new row with `channel: "social"` | The social card says Waiting. No feed is invented. |
+| Score is the share that passed, in total and per country | `js/score.js` | Passed of total on the blue tile, and the same split on each country chip. Review does not pass. |
+| Who is speaking | `speaker` on each row in `data/sources.json` | Alfa Laval, Distributors, Partners, Websites, Social. The strip shows passed of total for each. |
+| Social only from an approved feed | a new row with `channel` and `speaker` set to `social`, `origin` `live` | The two LinkedIn rows are seeded examples. The card says “Examples only.” |
 
 ## What moves to Databricks
 

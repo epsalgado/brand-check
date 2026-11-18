@@ -7,8 +7,9 @@
  * what counts as passed. Do not invent a similarity percent.
  *
  * The score is the share of pages that passed. Passed means the verdict
- * is On brand. Review and Mismatch do not pass. 3 of 6 is 50%. The same
- * count is repeated for each country on the page.
+ * is On brand. Review and Mismatch do not pass. The same count is repeated
+ * for each country. The "Who is speaking" strip uses this same rule. It is
+ * drawn in dashboard.js from the verdict, not from a second formula.
  */
 
 export function scoreRun(reports) {

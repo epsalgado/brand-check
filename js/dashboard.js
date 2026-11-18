@@ -7,8 +7,17 @@
  * pass share from score.js.
  *
  * The cards say Stand-in or Waiting on purpose. Brand Hub, Brand Agent,
- * and the social feed are not connected. The websites card counts pages
- * whose channel is not "social".
+ * and a live social feed are not connected.
+ *
+ * "Who is speaking" is a count, not a new check. The groups are:
+ *   alfa-laval   Alfa Laval's own site
+ *   distributor  a distributor page
+ *   partner      a company that works with Alfa Laval. Still checked.
+ *                Harbour Hygienic is Review, so Partners is 0 of 1.
+ *   website      any other site, such as a spare-parts listing
+ *   social       a post. Seeded rows are samples. Live rows need Kim's feed.
+ * The chip is "passed of total" for that group. Review does not pass.
+ * Wilmer: set page.speaker in data/sources.json. This file only reads it.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
@@ -21,10 +30,22 @@ const VERDICT_LABEL = {
   "mismatch": "Mismatch"
 };
 
-const CHANNEL_LABEL = {
+const SPEAKER_ORDER = ["alfa-laval", "distributor", "partner", "website", "social"];
+
+const SPEAKER_LABEL = {
+  "alfa-laval": "Alfa Laval",
+  distributor: "Distributors",
+  partner: "Partners",
+  website: "Websites",
+  social: "Social"
+};
+
+const SPEAKER_ROW = {
+  "alfa-laval": "Alfa Laval",
+  distributor: "Distributor",
+  partner: "Partner",
   website: "Website",
-  social: "Social",
-  other: "Other"
+  social: "Social"
 };
 
 let selectedId = "";
@@ -36,6 +57,7 @@ export function renderDashboard(reports, context) {
   }
   renderCounts(reports, context.score);
   renderLinks(reports, context.hub);
+  renderSpeakers(reports);
   renderCoverage(context.score);
   renderQueue(reports);
   renderCase(reports.find((report) => report.page.id === selectedId), context.hub);
@@ -73,24 +95,22 @@ function renderCounts(reports, score) {
 }
 
 function renderLinks(reports, hub) {
-  const socialReports = reports.filter((report) => report.page.channel === "social");
+  const socialReports = reports.filter((report) => speakerOf(report.page) === "social");
   const socialLive = socialReports.some((report) => report.page.origin === "live");
-  const websites = reports.filter((report) => report.page.channel !== "social").length;
   const socialState = socialReports.length === 0
     ? "Waiting"
     : socialLive
       ? `${socialReports.length} posts`
       : `${socialReports.length} samples`;
   const socialNote = socialReports.length === 0
-    ? "Websites are in this run. Social waits for an approved feed."
+    ? "Social waits for an approved feed."
     : socialLive
       ? "From the approved feed."
       : "Examples only. Not a live scrape.";
   document.getElementById("links").innerHTML = `
     ${linkCard("Brand Hub", "Stand-in", hub.note)}
     ${linkCard("Brand Agent", "Stand-in", "Returns On brand, Review, or Mismatch, with the reason.")}
-    ${linkCard("Social feed", socialState, socialNote)}
-    ${linkCard("Websites", String(websites), "Distributor pages, shops, news, and Alfa Laval’s own site.")}`;
+    ${linkCard("Social feed", socialState, socialNote)}`;
 }
 
 function linkCard(title, state, note) {
@@ -99,6 +119,30 @@ function linkCard(title, state, note) {
 
 function kpi(label, value, note, tone) {
   return `<article class="kpi kpi-${tone}"><p>${escapeHtml(label)}</p><strong>${value}</strong><span>${escapeHtml(note)}</span></article>`;
+}
+
+function renderSpeakers(reports) {
+  const chips = SPEAKER_ORDER.map((speaker) => {
+    const group = reports.filter((report) => speakerOf(report.page) === speaker);
+    const passed = group.filter((report) => report.verdict === "on-brand").length;
+    return `<li><span>${escapeHtml(SPEAKER_LABEL[speaker])}</span> ${passed} of ${group.length}</li>`;
+  }).join("");
+  document.getElementById("speakers").innerHTML = `
+    <p>Who is speaking</p>
+    <ul>${chips}</ul>`;
+}
+
+function speakerOf(page) {
+  if (page.channel === "social") return "social";
+  return page.speaker || "website";
+}
+
+function sourceLine(page) {
+  const speaker = speakerOf(page);
+  const label = SPEAKER_ROW[speaker] || "Website";
+  if (speaker === "social") return `${label} · ${page.sourceType}`;
+  if (speaker === "website") return `${label} · ${page.sourceType}`;
+  return label;
 }
 
 function renderCoverage(score) {
@@ -114,11 +158,10 @@ function renderCoverage(score) {
 function renderQueue(reports) {
   const rows = reports.map((report) => {
     const selected = report.page.id === selectedId ? " is-selected" : "";
-    const channel = CHANNEL_LABEL[report.page.channel] || "Website";
     return `
       <button type="button" class="queue-row${selected}" data-id="${escapeHtml(report.page.id)}">
         <span class="queue-title">${escapeHtml(report.page.title)}<span class="queue-where">${escapeHtml(whereLine(report.page))}</span></span>
-        <span class="queue-type">${escapeHtml(channel)} · ${escapeHtml(report.page.sourceType)}</span>
+        <span class="queue-type">${escapeHtml(sourceLine(report.page))}</span>
         <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
         <span class="queue-count">${report.flags.length}</span>
       </button>`;

@@ -19,12 +19,22 @@
  * in the git push.
  *
  * Page snapshot shape:
- *   id, origin ("live" or "seeded"), channel, sourceType, country, site,
- *   title, url, fetchedAt, text, colors (array of #RRGGBB),
+ *   id, origin ("live" or "seeded"), channel, sourceType, speaker,
+ *   country, site, title, url, fetchedAt, text, colors (array of #RRGGBB),
  *   logo { present, stretched, color, lockup }
- * channel is "website", "social", or "other". Social rows arrive only from
- * a feed Alfa Laval has approved. country is a country name, or "Worldwide"
- * for Alfa Laval's own global site. site is the website name.
+ *
+ * channel is "website" or "social".
+ * speaker is who is talking. Set it on every row. Wilmer, use only these:
+ *   "alfa-laval"   their own site, such as alfalaval.com
+ *   "distributor"  a distributor page
+ *   "partner"      a company that works with them and is not a distributor
+ *   "website"      any other site, such as spare parts or news
+ *   "social"       a social post. Must match channel "social".
+ * A partner is checked like every other row. Do not skip the check, and
+ * do not mark a partner on brand because they work with Alfa Laval.
+ * Social rows with origin "live" arrive only from a feed Kim has approved.
+ * The LinkedIn rows already in this file are origin "seeded": examples.
+ * country is a country name, or "Worldwide" for Alfa Laval's own global site.
  * lockup is one of: official-wordmark, recolored, old-wordmark, missing.
  */
 
