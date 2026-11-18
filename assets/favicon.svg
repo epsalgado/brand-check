@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!--
+    Browser icon for the Brand consistency monitor.
+    The white curve is Alfa Laval's swoosh, white on navy, which is an
+    allowed lockup. It is drawn heavy enough to survive a 16px browser tab.
+    The blue corner is ours, so the tab is not mistaken for alfalaval.com.
+  -->
+  <rect width="32" height="32" rx="7" fill="#0B1128"/>
+  <path d="M4 12c6 7 18 7 24 0" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+  <rect x="21" y="21" width="8" height="8" rx="2" fill="#0068FF"/>
+</svg>
