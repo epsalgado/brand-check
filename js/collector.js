@@ -5,9 +5,9 @@
  *
  * Kim's first task is to gather the data. He has not said a social scrape
  * is allowed, because a scrape includes personal data. Wilmer: add public
- * company pages here (distributor sites, spare-part shops, news). Add a
- * social row only when Kim names an approved feed, and set channel to
- * "social". Do not invent a feed.
+ * company pages here (distributor sites, spare-part shops, news). The two
+ * LinkedIn rows in sources.json are written examples, origin "seeded".
+ * A real social row, origin "live", waits until Kim names an approved feed.
  *
  * Today this reads snapshots in data/sources.json. Some were copied from
  * Alfa Laval's own site. Some were written by the team so a mismatch is

@@ -73,12 +73,23 @@ function renderCounts(reports, score) {
 }
 
 function renderLinks(reports, hub) {
-  const social = reports.filter((report) => report.page.channel === "social").length;
+  const socialReports = reports.filter((report) => report.page.channel === "social");
+  const socialLive = socialReports.some((report) => report.page.origin === "live");
   const websites = reports.filter((report) => report.page.channel !== "social").length;
+  const socialState = socialReports.length === 0
+    ? "Waiting"
+    : socialLive
+      ? `${socialReports.length} posts`
+      : `${socialReports.length} samples`;
+  const socialNote = socialReports.length === 0
+    ? "Websites are in this run. Social waits for an approved feed."
+    : socialLive
+      ? "From the approved feed."
+      : "Examples only. Not a live scrape.";
   document.getElementById("links").innerHTML = `
     ${linkCard("Brand Hub", "Stand-in", hub.note)}
     ${linkCard("Brand Agent", "Stand-in", "Returns On brand, Review, or Mismatch, with the reason.")}
-    ${linkCard("Social feed", social ? `${social} posts` : "Waiting", social ? "From the approved feed." : "Websites are in this run. Social waits for an approved feed.")}
+    ${linkCard("Social feed", socialState, socialNote)}
     ${linkCard("Websites", String(websites), "Distributor pages, shops, news, and Alfa Laval’s own site.")}`;
 }
 

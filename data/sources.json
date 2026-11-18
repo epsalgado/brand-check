@@ -1,5 +1,5 @@
 {
-  "note": "Each item is one page the monitor has collected. origin live means the text came from a real Alfa Laval page on 18 Nov 2026. origin seeded means we wrote the page so the team can see a mismatch on purpose. channel website is a public company page and is allowed in this run. channel social is only for a feed Kim Gustafsson has approved. None is approved yet, so this file has no social rows. A Databricks job will replace this file with pages gathered from the web. Do not add personal profiles.",
+  "note": "Each item is one page the monitor has collected. origin live means the text came from a real Alfa Laval page on 18 Nov 2026. origin seeded means we wrote the page so the team can see a result on purpose. channel website is a public company page. channel social with origin seeded is an example of what an approved feed would look like. It is not a scrape, and it has no personal profile. A real social row waits until Kim Gustafsson approves a feed. A Databricks job will replace this file with pages gathered from the web.",
   "pages": [
     {
       "id": "maxilobe-official",
@@ -84,6 +84,34 @@
       "text": "We installed Alfa Laval MaxiLobe rotary lobe pumps on a dairy line. They are hygienic, built for higher efficiency, and used across dairy, food, beverage, and home and personal care. Customers keep telling us it is an amazing upgrade.",
       "colors": ["#0B1128", "#0068FF", "#FFFFFF"],
       "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    },
+    {
+      "id": "social-maxilobe-sample",
+      "origin": "seeded",
+      "channel": "social",
+      "sourceType": "LinkedIn post",
+      "country": "Sweden",
+      "site": "linkedin.com",
+      "title": "Sample — Alfa Laval on MaxiLobe",
+      "url": "https://example.com/social-maxilobe",
+      "fetchedAt": "2026-11-18",
+      "text": "Get more from every production run with the Alfa Laval MaxiLobe hygienic rotary lobe pumps. Engineered for higher efficiency, a broader operating range, and simplified maintenance. Reliable performance across dairy, food, beverage, and home and personal care.",
+      "colors": ["#0B1128", "#0068FF", "#FFFFFF"],
+      "logo": { "present": true, "stretched": false, "color": "#0B1128", "lockup": "official-wordmark" }
+    },
+    {
+      "id": "social-compabloc-sample",
+      "origin": "seeded",
+      "channel": "social",
+      "sourceType": "LinkedIn post",
+      "country": "Germany",
+      "site": "linkedin.com",
+      "title": "Sample — Rhine Process on Compabloc",
+      "url": "https://example.com/social-compabloc",
+      "fetchedAt": "2026-11-18",
+      "text": "Amazing deal on the Alfa Laval Compabloc. This game-changer is 10 times more efficient than a shell-and-tube. Cheapest Compabloc we have posted.",
+      "colors": ["#E87722", "#FFFFFF"],
+      "logo": { "present": true, "stretched": true, "color": "#E87722", "lockup": "recolored" }
     }
   ]
 }
