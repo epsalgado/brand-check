@@ -4,7 +4,8 @@
  * Alfa Laval's own product pages, saved in data/products.json.
  * Each record has the name, the family, the official link, and the words
  * Alfa Laval wrote. The stand-in Brand Hub loads this file. The analyzer
- * uses those words as the authentic version until the hub MCP is connected.
+ * uses those words as the Brand Hub text until the hub MCP is connected.
+ * Reasons on screen say Brand Hub. Do not say the check used the public site.
  * Wilmer: a hub connection replaces the source in brand-hub.js. The name-
  * matching rules in this file can stay.
  *

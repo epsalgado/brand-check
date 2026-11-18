@@ -167,11 +167,10 @@ function checkLogo(page) {
 }
 
 /**
- * Page colors are judged on Alfa Laval's own site. A reseller's orange
- * button is their brand, not a miss. Wilmer: do not record a whole
- * stylesheet. Record a color here only when it is Alfa Laval's own page,
- * or when it is the color of an Alfa Laval wordmark (that case is the
- * logo check).
+ * Colors on a reseller's page are not checked. Their buttons are their
+ * brand. On an Alfa Laval page, each color outside the Brand Hub palette
+ * is its own flag. The color of an Alfa Laval logo, including logo.ground,
+ * is the logo check. Wilmer: do not record a whole stylesheet.
  */
 function checkColors(page) {
   const flags = [];

@@ -9,7 +9,9 @@
  * aim is to hand it one found page and get back:
  *   verdict: "on-brand" | "review" | "mismatch"
  *   reasons: sentences a person can act on
- * A bare yes or no is not enough. The open case prints each reason.
+ * A bare yes or no is not enough. Each reason is one flag. The open
+ * case numbers them 1, 2, 3 so the count matches the lines. Do not
+ * merge two problems into one reason.
  *
  * status "stand-in" means that call does not exist yet. analyzer.js
  * supplies the same answer from the local checks (claims, logo, color,

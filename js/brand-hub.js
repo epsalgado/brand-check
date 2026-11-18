@@ -5,13 +5,15 @@
  * the hub MCP.
  *
  * Kim said the Brand Hub holds the guidelines and assets, and that it
- * can be reached through an MCP. A found page is compared against that
- * hub. The public website is the world we check. The hub is the correct
- * Alfa Laval version.
+ * can be reached through an MCP. The Brand Agent compares each found
+ * page against this hub. Found pages include public websites. The hub
+ * is the correct Alfa Laval version. Do not describe the check as a
+ * comparison with the public website.
  *
  * status "stand-in" means the MCP is not open. data/products.json, copied
  * from alfalaval.com on 18 Nov 2026, fills the slot. brand-book.js holds
- * the color and logo rules for the same reason.
+ * the color and logo rules for the same reason. The screen still calls
+ * this the Brand Hub.
  *
  * When the hub connects: load the hub here, set status to "connected",
  * and keep returning { id, status, label, note, catalogue }. The agent

@@ -54,7 +54,7 @@ body {
   gap: 20px;
 }
 
-/* The public wordmark is navy. On the navy bar it is drawn in white. */
+/* The header logo file is navy. On the navy bar it is drawn in white. */
 .mast img {
   display: block;
   height: 32px;

@@ -5,14 +5,16 @@
  * stand-in check uses. When the hub MCP returns the real guidelines,
  * replace the lists here, or stop reading this file from the analyzer.
  *
- * Colors and the wordmark come from Alfa Laval's public site (alfalaval.com),
- * read on 18 Nov 2026. Their own typeface is "Alfa Laval"; the site falls
+ * These lists stand in for the Brand Hub. They were read from alfalaval.com
+ * on 18 Nov 2026. Their own typeface is "Alfa Laval"; the site falls
  * back to Roboto, and so does this dashboard.
+ * Reasons on screen name the Brand Agent and the Brand Hub. Do not write
+ * that the check compared the public website.
  *
  * The analyzer only reads these lists. It does not invent rules.
  */
 
-/** Colors that appear on the public site. A found color may sit near one of these. */
+/** Brand Hub stand-in colors. A found color may sit near one of these. */
 export const PALETTE = [
   { name: "Navy", hex: "#0B1128" },
   { name: "Blue", hex: "#0068FF" },
@@ -32,12 +34,12 @@ export const PALETTE = [
  */
 export const COLOR_TOLERANCE = 80;
 
-/** The wordmark is navy on a light ground, or white on a dark ground. */
+/** The logo ink is navy on a light ground, or white on a dark ground. logo.ground is checked against navy. */
 export const LOGO_COLORS = ["#0B1128", "#FFFFFF"];
 
 /**
- * Words Alfa Laval does not use on its product pages. A hit is a style
- * mismatch, not a broken product fact. Kept as a low-severity flag.
+ * Words the Brand Hub does not use. Each hit is its own low-severity flag.
+ * The case numbers it with the other flags. It is a review, not a broken fact.
  */
 export const HYPE_WORDS = [
   "amazing",

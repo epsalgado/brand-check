@@ -50,6 +50,8 @@
  * which is logo.ground. The Brand Agent reports that blue because it is
  * not the Brand Hub navy #0B1128. Reason text names the Brand Agent and
  * the Brand Hub. Do not write that the check compared public websites.
+ * Each problem is one flag. The dashboard numbers them. Do not merge
+ * two problems into one reason.
  * Their own ELEMENT header is not part of the check.
  * Do not record a reseller's own button colors as a brand miss. AEL's
  * orange is their site, not Alfa Laval's.
