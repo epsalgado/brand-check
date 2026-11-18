@@ -10,18 +10,21 @@
  *
  * Four checks, in the order a brand lead cares about them:
  *   1. Claims   — numbers and certificates the found page asserts
- *   2. Logo     — the Alfa Laval wordmark, only when this page shows it
- *   3. Color    — fills on Alfa Laval's own site, not a reseller's buttons
- *   4. Language — hype that Alfa Laval's own pages do not use
+ *   2. Logo     — the Alfa Laval logo, only when this page shows it
+ *   3. Color    — fills checked against the Brand Hub, not a reseller's buttons
+ *   4. Language — hype the Brand Hub does not use
  *
  * Kim's question is: does this company sell an Alfa Laval product, and
  * where it shows Alfa Laval's logo, is that logo the real one?
  * A distributor or reseller is its own company. Their own logo on their
- * own page is not a miss. A missing Alfa Laval wordmark is a miss only
+ * own page is not a miss. A missing Alfa Laval logo is a miss only
  * on Alfa Laval's own site (speaker "alfa-laval").
- * If the page does show the Alfa Laval wordmark, stretched, old, or
- * recolored is a mismatch. That is the check. Do not flag a site only
- * because the header is the reseller's own mark.
+ * If the page does show the Alfa Laval logo, stretched, old, recolored,
+ * or a ground color that is not the Brand Hub navy is a mismatch.
+ * logo.ground holds that blue, as on Element (#11387F).
+ * Reason text names the Brand Agent and the Brand Hub. Do not write
+ * that the check compared Alfa Laval's public website.
+ * Do not flag a site only because the header is the reseller's own mark.
  *
  * A high-severity flag makes the page a mismatch. Only low flags mean
  * "review". No flags means "on brand".
@@ -112,12 +115,13 @@ function claimsIn(text) {
 
 /**
  * Logo facts were recorded when the page was collected.
- * Wilmer: logo.present false means we did not see the Alfa Laval wordmark.
+ * Wilmer: logo.present false means we did not see the Alfa Laval logo.
  * That is a miss only when speaker is "alfa-laval". On a distributor,
  * partner, spare-parts site, or social post, their own logo is expected.
- * When the Alfa Laval wordmark is present, judge that mark: proportions,
- * current lockup, navy or white. A wrong mark is a mismatch no matter
- * who the speaker is.
+ * When the Alfa Laval logo is present, judge that mark against the Brand
+ * Hub: proportions, lockup, navy or white, and logo.ground when the field
+ * behind the letters is recorded. A wrong mark is a mismatch no matter
+ * who the source is. The sentence on screen is the Brand Agent's reason.
  */
 function checkLogo(page) {
   const logo = page.logo || {};

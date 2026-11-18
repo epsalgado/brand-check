@@ -23,8 +23,11 @@
  * A real http address is a link Kim can open. example.com is a written
  * sample and is not linked. Put the live URL in page.url when you have it.
  * When the logo check fails and page.logo.image points at a file under
- * assets/, the case shows that image beside the current Alfa Laval logo.
+ * assets/, the case shows that image beside the Brand Hub logo.
  * This file only displays it. It does not decide the mismatch.
+ * A flag is one specific problem. The queue count is report.flags.length.
+ * The open case numbers those same flags 1, 2, 3 so the count can be
+ * matched to a line. Do not merge two problems into one sentence.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
@@ -170,7 +173,7 @@ function renderQueue(reports) {
         <span class="queue-title">${escapeHtml(report.page.title)}<span class="queue-where">${whereLineHtml(report.page)}</span></span>
         <span class="queue-type">${escapeHtml(sourceLine(report.page))}</span>
         <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
-        <span class="queue-count">${report.flags.length}</span>
+        <span class="queue-count">${flagCount(report.flags.length)}</span>
       </div>`;
   }).join("");
   document.getElementById("queue").innerHTML = rows;
@@ -197,8 +200,9 @@ function renderCase(report, hub) {
       </div>
       <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
     </header>
+    <p class="flag-total">${escapeHtml(flagCount(report.flags.length))}</p>
     <ul class="checks">
-      ${report.checks.map(renderCheck).join("")}
+      ${renderChecks(report.checks)}
     </ul>
     ${renderLogoCompare(page, report.checks)}
     <div class="compare">
@@ -271,11 +275,28 @@ function isAssetPath(value) {
   return typeof value === "string" && value.startsWith("assets/") && !value.includes("..");
 }
 
-function renderCheck(check) {
+function flagCount(count) {
+  if (count === 0) return "0 flags";
+  if (count === 1) return "1 flag";
+  return `${count} flags`;
+}
+
+function renderChecks(checks) {
+  let number = 1;
+  return checks.map((check) => {
+    const html = renderCheck(check, number);
+    number += check.flags.length;
+    return html;
+  }).join("");
+}
+
+function renderCheck(check, start) {
   if (!check.flags.length) {
     return `<li class="check check-pass"><strong>${escapeHtml(check.label)}</strong><span>${escapeHtml(check.pass || "Matches")}</span></li>`;
   }
-  const details = check.flags.map((flag) => `<span>${escapeHtml(flag.detail)}</span>`).join("");
+  const details = check.flags.map((flag, index) => {
+    return `<span><b>${start + index}.</b> ${escapeHtml(flag.detail)}</span>`;
+  }).join("");
   return `<li class="check check-flag"><strong>${escapeHtml(check.label)}</strong><div>${details}</div></li>`;
 }
 

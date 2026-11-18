@@ -16,7 +16,7 @@
  *
  * What this repo aims to do with that:
  *   1. Brand Hub is the correct version.          brand-hub.js   NOT CONNECTED
- *   2. Collect pages and tag who is speaking.     collector.js
+ *   2. Collect pages and tag the source.          collector.js
  *      speaker: alfa-laval, distributor, partner,
  *      website (other sites, such as spare parts),
  *      or social. Social "live" waits for a feed

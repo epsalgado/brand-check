@@ -21,14 +21,15 @@
  * Page snapshot shape:
  *   id, origin ("live" or "seeded"), channel, sourceType, speaker,
  *   country, site, title, url, fetchedAt, text, colors (array of #RRGGBB),
- *   logo { present, stretched, color, lockup, image, imageLabel }
+ *   logo { present, stretched, color, ground, lockup, image, imageLabel }
  * image is optional. When the logo check fails and image is a file under
- * assets/, the open case shows that file beside the current Alfa Laval logo.
+ * assets/, the open case shows that file beside the Brand Hub logo.
  * Element's image is the plaque from their page. The orange file is a
  * written example of a stretched, recolored mark, not a photo of a live page.
  *
  * channel is "website" or "social".
- * speaker is who is talking. Set it on every row. Wilmer, use only these:
+ * speaker is the source group. The screen calls this "On brand by source".
+ * It is not a person talking. Set it on every row. Wilmer, use only these:
  *   "alfa-laval"   their own site, such as alfalaval.com
  *   "distributor"  a distributor page
  *   "partner"      a company that works with them and is not a distributor
