@@ -57,7 +57,7 @@ Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and 
 ## The four checks
 
 1. **Claims.** Numbers like `10 times`, `90%`, `60 bar`, plus phrases in the brand book. A claim passes only when Alfa Laval’s own page for that product already says it.
-2. **Logo.** A reseller’s own logo is not a miss. The Alfa Laval wordmark is checked when the page shows it. Stretched, old, or recolored marks fail. Navy `#0B1128` and white pass. A missing wordmark fails only on Alfa Laval’s own site.
+2. **Logo.** A reseller’s own logo is not a miss. The Alfa Laval wordmark is checked when the page shows it. Stretched, old, or recolored marks fail. Navy `#0B1128` and white pass. A missing wordmark fails only on Alfa Laval’s own site. When that check fails and `logo.image` is a file under `assets/`, the open case shows that image beside the Brand Hub logo. Reasons are written as the Brand Agent comparing against the Brand Hub. Element’s letters match that logo and are white. The mismatch is the blue field `#11387F`, recorded as `logo.ground`. The Brand Hub navy is `#0B1128`.
 3. **Color.** Fills are checked on Alfa Laval’s own site. A reseller’s own button color is not a miss. The color of an Alfa Laval wordmark is the logo check.
 4. **Language.** Words such as “cheapest” and “game-changer” are a review, not a broken fact.
 

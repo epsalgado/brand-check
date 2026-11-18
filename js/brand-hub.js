@@ -26,7 +26,7 @@ export async function loadBrandHub() {
     id: "brand-hub",
     status: "stand-in",
     label: "Brand Hub",
-    note: "Public site stand-in until Alfa Laval connects the hub.",
+    note: "The correct Alfa Laval version. The Brand Agent compares each found page against this.",
     catalogue
   };
 }

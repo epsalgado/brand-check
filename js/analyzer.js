@@ -72,14 +72,16 @@ function verdictFor(flags) {
 
 /**
  * Pulls "10 times", "90%", "60 bar", and the phrases in the brand book.
- * A claim is fine when the same words are already on Alfa Laval's page.
+ * A claim is fine when the Brand Hub already says the same words.
+ * Reasons name the Brand Agent and the Brand Hub. Do not write that the
+ * check was a comparison with Alfa Laval's public website.
  */
 function checkClaims(page, products, authentic) {
   const flags = [];
   if (!products.length) {
     flags.push({
       severity: "high",
-      detail: "The page does not name a product from Alfa Laval’s catalogue."
+      detail: "Brand Agent: this page does not name a product the Brand Hub holds."
     });
   }
 
@@ -88,7 +90,7 @@ function checkClaims(page, products, authentic) {
       const name = products[0] ? products[0].name : "the catalogue";
       flags.push({
         severity: "high",
-        detail: `“${claim}” is not on Alfa Laval’s page for ${name}.`
+        detail: `Brand Agent: “${claim}” is not in the Brand Hub entry for ${name}.`
       });
     }
   }
@@ -127,25 +129,33 @@ function checkLogo(page) {
     if (isAlfaLaval(page)) {
       flags.push({
         severity: "high",
-        detail: "The Alfa Laval wordmark is missing from Alfa Laval’s own page."
+        detail: "Brand Agent: the Brand Hub logo is missing from this Alfa Laval page."
       });
     } else {
-      pass = "No Alfa Laval wordmark on this page. Their own logo is fine. The wordmark is checked only when the page shows it on an Alfa Laval product.";
+      pass = "Brand Agent: no Alfa Laval logo on this page. Their own logo is fine. The logo is checked only when the page shows it.";
     }
   } else {
     if (logo.stretched) {
-      flags.push({ severity: "high", detail: "The Alfa Laval wordmark is stretched. Alfa Laval uses it at its real proportions." });
+      flags.push({ severity: "high", detail: "Brand Agent: this logo is stretched. The Brand Hub logo keeps its real proportions." });
     }
     if (logo.lockup === "old-wordmark") {
       flags.push({
         severity: "high",
-        detail: "This is the old Alfa Laval logo. The name is stacked on two lines. The current logo is one line, ALFA LAVAL, with the curve above the name, in navy or white."
+        detail: "Brand Agent: this is an old Alfa Laval logo. The Brand Hub logo is the ALFA LAVAL mark in navy, or in white on a dark ground."
       });
     }
     if (logo.lockup === "recolored") {
-      flags.push({ severity: "high", detail: "The Alfa Laval wordmark has been recolored. It is navy #0B1128, or white on a dark ground." });
+      flags.push({ severity: "high", detail: "Brand Agent: this logo has been recolored. The Brand Hub logo is navy #0B1128, or white on a dark ground." });
     } else if (logo.color && !nearPalette(logo.color, LOGO_COLORS, COLOR_TOLERANCE)) {
-      flags.push({ severity: "high", detail: `The Alfa Laval wordmark color ${logo.color} is not navy or white.` });
+      flags.push({ severity: "high", detail: `Brand Agent: this logo color ${logo.color} is not the Brand Hub navy or white.` });
+    }
+    if (logo.ground && !nearPalette(logo.ground, ["#0B1128"], COLOR_TOLERANCE)) {
+      const ground = String(logo.ground).toUpperCase();
+      const away = Math.round(distance(hexToRgb(ground), hexToRgb("#0B1128")));
+      flags.push({
+        severity: "high",
+        detail: `Brand Agent: the letters match the logo in the Brand Hub, and the letters are white. The blue behind them is ${ground}. The Brand Hub logo is navy #0B1128. Two blues count as the same within a distance of ${COLOR_TOLERANCE}. This blue is ${away} away from navy, and it is not the brand blue #0068FF.`
+      });
     }
   }
 
@@ -163,14 +173,14 @@ function checkColors(page) {
   const flags = [];
   let pass = "Matches";
   if (!isAlfaLaval(page)) {
-    pass = "Their own site colors are not checked. Color is checked on Alfa Laval’s own site, and on the Alfa Laval wordmark when a page shows it.";
+    pass = "Brand Agent: their own site colors are not checked. Color is checked against the Brand Hub, and on the Alfa Laval logo when a page shows it.";
     return { id: "color", label: "Color", flags, pass };
   }
   for (const hex of page.colors || []) {
     if (!nearPalette(hex, PALETTE.map((swatch) => swatch.hex), COLOR_TOLERANCE)) {
       flags.push({
         severity: "high",
-        detail: `${hex.toUpperCase()} is not an Alfa Laval color. The brand blue is #0068FF and the navy is #0B1128.`
+        detail: `Brand Agent: ${hex.toUpperCase()} is not a color in the Brand Hub. The brand blue is #0068FF and the navy is #0B1128.`
       });
     }
   }
@@ -189,7 +199,7 @@ function checkLanguage(page, authentic) {
     if (lower.includes(word) && !authentic.includes(word)) {
       flags.push({
         severity: "low",
-        detail: `“${word}” is not how Alfa Laval writes about its products.`
+        detail: `Brand Agent: “${word}” is not how the Brand Hub writes about this product.`
       });
     }
   }

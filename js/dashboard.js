@@ -20,6 +20,9 @@
  * Wilmer: set page.speaker in data/sources.json. This file only reads it.
  * A real http address is a link Kim can open. example.com is a written
  * sample and is not linked. Put the live URL in page.url when you have it.
+ * When the logo check fails and page.logo.image points at a file under
+ * assets/, the case shows that image beside the current Alfa Laval logo.
+ * This file only displays it. It does not decide the mismatch.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
@@ -176,7 +179,7 @@ function renderCase(report, hub) {
   const product = report.products[0];
   const theirWords = product
     ? excerpt(product.words || product.blurb, 520)
-    : "No catalogue product was named, so there is no Alfa Laval page to put beside this.";
+    : "No product from the Brand Hub was named, so there is no Brand Hub text to put beside this.";
   const productLine = report.products.length
     ? report.products.map((item) => item.name).join(", ")
     : "None named";
@@ -195,6 +198,7 @@ function renderCase(report, hub) {
     <ul class="checks">
       ${report.checks.map(renderCheck).join("")}
     </ul>
+    ${renderLogoCompare(page, report.checks)}
     <div class="compare">
       <section>
         <h3>What we found</h3>
@@ -231,6 +235,38 @@ function openLink(page) {
   const url = liveUrl(page);
   if (url) return `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open this page</a>`;
   return `<p class="sample-note">Written example. No live page to open.</p>`;
+}
+
+function renderLogoCompare(page, checks) {
+  const logoCheck = checks.find((check) => check.id === "logo");
+  const image = page.logo && page.logo.image;
+  if (!logoCheck || !logoCheck.flags.length || !isAssetPath(image)) return "";
+  const foundLabel = page.logo.imageLabel || "The Alfa Laval logo on this page.";
+  const sample = page.origin === "seeded"
+    ? `<p class="sample-note">Written example. This is the mark we recorded, not a photo of a live page.</p>`
+    : "";
+  return `
+    <div class="logo-compare">
+      <figure>
+        <figcaption>On this page</figcaption>
+        <div class="logo-frame">
+          <img src="${escapeHtml(image)}" alt="${escapeHtml(foundLabel)}">
+        </div>
+        <p>${escapeHtml(foundLabel)}</p>
+        ${sample}
+      </figure>
+      <figure>
+        <figcaption>Brand Hub logo</figcaption>
+        <div class="logo-frame logo-frame-current">
+          <img src="assets/alfa-laval-logo.svg" alt="Brand Hub logo">
+        </div>
+        <p>What the Brand Agent compares against.</p>
+      </figure>
+    </div>`;
+}
+
+function isAssetPath(value) {
+  return typeof value === "string" && value.startsWith("assets/") && !value.includes("..");
 }
 
 function renderCheck(check) {

@@ -21,7 +21,11 @@
  * Page snapshot shape:
  *   id, origin ("live" or "seeded"), channel, sourceType, speaker,
  *   country, site, title, url, fetchedAt, text, colors (array of #RRGGBB),
- *   logo { present, stretched, color, lockup }
+ *   logo { present, stretched, color, lockup, image, imageLabel }
+ * image is optional. When the logo check fails and image is a file under
+ * assets/, the open case shows that file beside the current Alfa Laval logo.
+ * Element's image is the plaque from their page. The orange file is a
+ * written example of a stretched, recolored mark, not a photo of a live page.
  *
  * channel is "website" or "social".
  * speaker is who is talking. Set it on every row. Wilmer, use only these:
@@ -41,10 +45,11 @@
  * belongs on their page. Set logo.present true, and lockup "recolored",
  * "old-wordmark", or stretched, only when the page shows the Alfa Laval
  * logo and that mark is wrong.
- * Element is the exception in this file. Their product panel shows the
- * old Authorized Distributor plaque (name stacked on two lines, older
- * blue). That is logo.present true and lockup "old-wordmark", a mismatch.
- * Their own ELEMENT header is not the miss.
+ * Element shows the Brand Hub logo in white. The blue field is #11387F,
+ * which is logo.ground. The Brand Agent reports that blue because it is
+ * not the Brand Hub navy #0B1128. Reason text names the Brand Agent and
+ * the Brand Hub. Do not write that the check compared public websites.
+ * Their own ELEMENT header is not part of the check.
  * Do not record a reseller's own button colors as a brand miss. AEL's
  * orange is their site, not Alfa Laval's.
  * country is a country name, or "Worldwide" for Alfa Laval's own global site.
