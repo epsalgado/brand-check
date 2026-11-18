@@ -18,6 +18,8 @@
  *   social       a post. Seeded rows are samples. Live rows need Kim's feed.
  * The chip is "passed of total" for that group. Review does not pass.
  * Wilmer: set page.speaker in data/sources.json. This file only reads it.
+ * A real http address is a link Kim can open. example.com is a written
+ * sample and is not linked. Put the live URL in page.url when you have it.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
@@ -159,12 +161,12 @@ function renderQueue(reports) {
   const rows = reports.map((report) => {
     const selected = report.page.id === selectedId ? " is-selected" : "";
     return `
-      <button type="button" class="queue-row${selected}" data-id="${escapeHtml(report.page.id)}">
-        <span class="queue-title">${escapeHtml(report.page.title)}<span class="queue-where">${escapeHtml(whereLine(report.page))}</span></span>
+      <div class="queue-row${selected}" data-id="${escapeHtml(report.page.id)}">
+        <span class="queue-title">${escapeHtml(report.page.title)}<span class="queue-where">${whereLineHtml(report.page)}</span></span>
         <span class="queue-type">${escapeHtml(sourceLine(report.page))}</span>
         <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
         <span class="queue-count">${report.flags.length}</span>
-      </button>`;
+      </div>`;
   }).join("");
   document.getElementById("queue").innerHTML = rows;
 }
@@ -185,7 +187,7 @@ function renderCase(report, hub) {
       <div>
         <p class="eyebrow">${escapeHtml(agent.label)} · ${escapeHtml(page.sourceType)}</p>
         <h2>${escapeHtml(page.title)}</h2>
-        <p class="case-meta">${escapeHtml(whereLine(page))}</p>
+        <p class="case-meta">${whereLineHtml(page)}</p>
         <p class="case-meta">Product match: ${escapeHtml(productLine)}</p>
       </div>
       <span class="pill pill-${report.verdict}">${VERDICT_LABEL[report.verdict]}</span>
@@ -197,7 +199,7 @@ function renderCase(report, hub) {
       <section>
         <h3>What we found</h3>
         <p>${escapeHtml(page.text)}</p>
-        ${page.url.startsWith("http") && page.origin === "live" ? `<a href="${escapeHtml(page.url)}" target="_blank" rel="noreferrer">Open their page</a>` : ""}
+        ${openLink(page)}
       </section>
       <section>
         <h3>What the Brand Hub holds</h3>
@@ -208,10 +210,27 @@ function renderCase(report, hub) {
     </div>`;
 }
 
-function whereLine(page) {
-  const country = page.country || "Country not recorded";
-  const site = page.site || "Site not recorded";
-  return `${country} · ${site}`;
+function liveUrl(page) {
+  const url = page.url || "";
+  if (!/^https?:\/\//i.test(url)) return "";
+  if (url.includes("example.com")) return "";
+  return url;
+}
+
+function whereLineHtml(page) {
+  const country = escapeHtml(page.country || "Country not recorded");
+  const site = escapeHtml(page.site || "Site not recorded");
+  const url = liveUrl(page);
+  const siteHtml = url
+    ? `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${site}</a>`
+    : site;
+  return `${country} · ${siteHtml}`;
+}
+
+function openLink(page) {
+  const url = liveUrl(page);
+  if (url) return `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">Open this page</a>`;
+  return `<p class="sample-note">Written example. No live page to open.</p>`;
 }
 
 function renderCheck(check) {

@@ -50,6 +50,8 @@ The design system is the look of the screen only (`css/dashboard.css`). It is no
 
 Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and the dashboard do not need a code change. A social row with `origin` `live` waits until Kim names an approved feed. The LinkedIn rows already in the file are `seeded` examples.
 
+`url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
+
 ## The four checks
 
 1. **Claims.** Numbers like `10 times`, `90%`, `60 bar`, plus phrases in the brand book. A claim passes only when Alfa Laval’s own page for that product already says it.

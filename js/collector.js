@@ -35,6 +35,8 @@
  * Social rows with origin "live" arrive only from a feed Kim has approved.
  * The LinkedIn rows already in this file are origin "seeded": examples.
  * country is a country name, or "Worldwide" for Alfa Laval's own global site.
+ * url is the address Kim opens. A real https address is a link on the
+ * screen. example.com is a written sample and is not linked.
  * lockup is one of: official-wordmark, recolored, old-wordmark, missing.
  */
 
