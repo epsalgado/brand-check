@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Brand check — Round Two</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <p class="kicker">Round Two · Alfa Laval hackathon</p>
+    <h1>Brand check</h1>
+    <p class="lede">Look up what Alfa Laval actually says about a product, or paste an outside paragraph and see where it drifts.</p>
+  </header>
+
+  <main>
+    <section class="panel" id="lookup">
+      <h2>Look up their words</h2>
+      <form id="search-form" class="row">
+        <label class="grow" for="q">Product or phrase</label>
+        <input id="q" name="q" type="search" placeholder="Try MaxiLobe, Compabloc, PureBallast" autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+      <p class="hint" id="search-hint">375 products from Alfa Laval’s public site, pulled 18 Nov 2026.</p>
+      <div id="search-results" class="results"></div>
+    </section>
+
+    <section class="panel" id="check">
+      <h2>Check an outside text</h2>
+      <p class="hint">Paste a distributor page, a listing, or a post. The check looks for real product names, then compares the numbers and claims with Alfa Laval’s own page.</p>
+      <div class="examples">
+        <button type="button" id="example-match">Try a close match</button>
+        <button type="button" id="example-drift" class="ghost">Try a drift</button>
+      </div>
+      <textarea id="outside" rows="8" placeholder="Paste the outside text here"></textarea>
+      <div class="row end">
+        <button type="button" id="run-check">Check against Alfa Laval</button>
+      </div>
+      <div id="check-results" class="results"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>This reads Alfa Laval’s public product pages so a person can compare. It does not speak for Alfa Laval, and a person still decides what to do about a mismatch.</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
