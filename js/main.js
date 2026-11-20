@@ -61,7 +61,7 @@ import { collectPages } from "./collector.js?v=4";
 import { judgePage } from "./brand-agent.js?v=4";
 import { scoreRun } from "./score.js?v=4";
 import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js?v=4";
-import { mountAlerts, refreshAlerts } from "./alerts.js?v=7";
+import { mountAlerts, refreshAlerts } from "./alerts.js?v=8";
 
 async function start() {
   const hub = await loadBrandHub();

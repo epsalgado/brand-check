@@ -217,10 +217,24 @@ button {
   background: var(--paper);
 }
 
+.alerts-waiting li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  align-items: start;
+}
+
+.alerts-waiting .pill {
+  grid-row: 1 / span 2;
+  display: inline-block;
+}
+
+.alerts-waiting .alerts-reason { grid-column: 2; }
+
 .alerts-waiting strong,
 .route-list strong { display: block; color: var(--navy); }
 
-.alerts-waiting span,
+.alerts-waiting .alerts-reason,
 .route-list span,
 .route-list code {
   display: block;

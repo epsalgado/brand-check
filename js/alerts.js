@@ -494,7 +494,8 @@ function channelItem(person, item) {
 
 function waitingItem(report) {
   const first = report.flags[0] ? report.flags[0].detail : "";
-  return `<li><strong>${esc(report.page.title)}</strong><span>${esc(first)}</span></li>`;
+  const label = report.verdict === "review" ? "Review" : "Mismatch";
+  return `<li><span class="pill pill-${esc(report.verdict)}">${label}</span><strong>${esc(report.page.title)}</strong><span class="alerts-reason">${esc(first)}</span></li>`;
 }
 
 function allChannels() {
