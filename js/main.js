@@ -31,6 +31,11 @@
  *      pass. Passed of total is the only score.
  *   5. Draw that, including on brand by source.   dashboard.js
  *      Do not judge here.
+ *   6. Notifications. Kim sets email, Slack,        alerts.js
+ *      Teams, Discord, Google Chat, or a webhook.
+ *      Each destination has its own timing.
+ *      This browser stores the addresses.
+ *      Databricks sends. Do not put a secret in git.
  *
  * The design system is the look of this screen only (css/dashboard.css).
  * It is not a check.
@@ -45,6 +50,7 @@ import { collectPages } from "./collector.js?v=4";
 import { judgePage } from "./brand-agent.js?v=4";
 import { scoreRun } from "./score.js?v=4";
 import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js?v=4";
+import { mountAlerts, refreshAlerts } from "./alerts.js?v=5";
 
 async function start() {
   const hub = await loadBrandHub();
@@ -54,6 +60,7 @@ async function start() {
 
   renderDashboard(reports, { hub, score });
   bindDashboard(reports, { hub, score }, () => runScan(reports, { hub, score }));
+  mountAlerts(reports);
   document.getElementById("run-note").textContent =
     `${score.passed} of ${score.total} on brand (${score.share}%). ${hub.catalogue.length} products in the Brand Hub stand-in.`;
 }
@@ -63,6 +70,7 @@ function runScan(reports, context) {
   setScanning(true);
   window.setTimeout(() => {
     renderDashboard(reports, context);
+    refreshAlerts(reports);
     setScanning(false);
   }, 700);
 }

@@ -20,6 +20,7 @@ Start at `js/main.js`. It runs the product in order:
 | Check | `js/analyzer.js` | The stand-in judgment: claims, logo, color, language. |
 | Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed. Review does not pass. |
 | Show | `js/dashboard.js` | Draws the score, the source counts, the queue, and the open case. It numbers the flags. It does not decide the verdict. |
+| Notify | `js/alerts.js` | The bell. Kim adds where an alert goes, when, how often, and whether to remind. Each destination keeps its own schedule. |
 
 The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
@@ -53,6 +54,8 @@ A collected row stays marked **New** until Kim clicks it. The mark is shaded, bo
 Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and the dashboard do not need a code change. A social row with `origin` `live` waits until Kim names an approved feed. The LinkedIn rows already in the file are `seeded` examples.
 
 `url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
+
+The bell at the top right is where Kim sets alerts. Email takes one or more email addresses. Slack, Teams, Discord, and Google Chat take the webhook address that tool gives you, not a username. A webhook row is any other https address. Several destinations can be on at once, and each one has its own timing: immediately, hourly, daily, or weekly, and an optional reminder if the page is still unopened. The addresses stay in this browser. Databricks is what sends. Do not commit a webhook.
 
 ## The four checks
 

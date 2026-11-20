@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- ?v=4 forces a fresh copy. GitHub Pages can keep the previous files for about 10 minutes. Bump this when the screen must ignore that copy. The same query is on the imports in js/. -->
-  <link rel="stylesheet" href="css/dashboard.css?v=4">
+  <!-- ?v=5 forces a fresh copy. GitHub Pages can keep the previous files for about 10 minutes. Bump this when the screen must ignore that copy. The same query is on the new import in js/main.js. -->
+  <link rel="stylesheet" href="css/dashboard.css?v=5">
 </head>
 <body>
   <!--
@@ -29,7 +29,16 @@
         <p class="product-team">Round Two</p>
       </div>
     </div>
-    <button type="button" id="scan">Scan collected pages</button>
+    <div class="mast-actions">
+      <button type="button" class="bell" id="alerts-open" aria-haspopup="dialog" aria-controls="alerts-dialog">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path fill="currentColor" d="M12 22a2.4 2.4 0 0 0 2.3-1.8h-4.6A2.4 2.4 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5-6.7V3.5a2 2 0 1 0-4 0v.8A7 7 0 0 0 5 11v5l-1.7 1.7A1 1 0 0 0 4 19h16a1 1 0 0 0 .7-1.7L19 16Z"/>
+        </svg>
+        <span class="bell-count" id="bell-count" hidden>0</span>
+        <span class="visually-hidden">Notifications</span>
+      </button>
+      <button type="button" id="scan">Scan collected pages</button>
+    </div>
   </header>
 
   <main>
@@ -53,6 +62,6 @@
     </section>
   </main>
 
-  <script type="module" src="js/main.js?v=4"></script>
+  <script type="module" src="js/main.js?v=5"></script>
 </body>
 </html>
