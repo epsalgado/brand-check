@@ -20,7 +20,7 @@ Start at `js/main.js`. It runs the product in order:
 | Check | `js/analyzer.js` | The stand-in judgment: claims, logo, color, language. |
 | Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed. Review does not pass. |
 | Show | `js/dashboard.js` | Draws the score, the source counts, the queue, and the open case. It numbers the flags. It does not decide the verdict. |
-| Notify | `js/alerts.js` | The bell. Kim adds where an alert goes, when, how often, and whether to remind. Each destination keeps its own schedule. |
+| Notify | `js/alerts.js` | The bell. Kim adds people and their addresses. The header of that file is the Databricks send: destinations, one alert per schedule, and the reminder Job. |
 
 The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
@@ -55,7 +55,19 @@ Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and 
 
 `url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
 
-The bell at the top right is where Kim sets alerts. He adds a person, then that person's email, Teams, Slack, Discord, Google Chat, or another webhook. The same person can have all of them. He then adds the next person, so several people can each receive the same kinds of alert. Chat tools take the webhook address that tool gives you, not a username. Every address has its own timing: immediately, hourly, daily, or weekly, and an optional reminder if the page is still unopened. The addresses stay in this browser. Databricks is what sends. Do not commit a webhook.
+The bell at the top right is where Kim sets alerts. He adds a person, then that person's email, Teams, Slack, Discord, Google Chat, or another webhook. The same person can have all of them. He then adds the next person, so several people can each receive the same kinds of alert. Chat tools take the webhook address that tool gives you, not a username. Every address has its own timing: immediately, hourly, daily, or weekly, and an optional reminder if the page is still unopened. The addresses stay in this browser under `brand-check-alerts`. The screen does not send them.
+
+## Connect the send
+
+Wilmer and Riman: the steps are in the header of `js/alerts.js`. Short version:
+
+The screen is the form. Databricks sends. A workspace admin adds one notification destination per address under Settings, Notifications. Email, Slack, and Teams are destination types, and Databricks writes those messages. Discord and Google Chat are not, so a Job posts those.
+
+A SQL Alert has one schedule. Make one alert per cadence (15 minutes, hourly, daily at 08:00 Europe/Stockholm, Monday 08:00) and subscribe only the destinations on that cadence. The mismatch query is `verdict = 'mismatch'` and `opened_at` is empty. A second query covers Review, and only people who chose "Mismatch or Review" subscribe to it. Leave retrigger off.
+
+Reminders are a daily Job, not the alert retrigger. `1d` and `3d` send once. `daily-until-open` sends each day until the queue click sets `opened_at`. The click today only fills `brand-check-seen` in the browser. Point that click at the finding row or the alert keeps firing.
+
+The SQL Alert webhook payload is an alert state change. It does not include the page rows. Put the page title and the first reason in the alert's custom subject and body for email, Slack, and Teams. Do not commit a webhook.
 
 ## The four checks
 

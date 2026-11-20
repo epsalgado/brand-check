@@ -8,18 +8,177 @@
  * have all four. The same kind can also be repeated, such as two emails
  * for one person. Each address keeps its own schedule.
  *
- * Address formats, checked here:
+ * This file does not send anything. "Send test" only stores a time in
+ * this browser. Wilmer and Riman: the send is a Databricks SQL Alert
+ * plus one Job for the cases SQL Alert cannot cover. Read the block
+ * below before creating the alert. Do not put a webhook or an email
+ * address in git.
+ *
+ * What the browser stores
+ * ------------------------
+ * localStorage key "brand-check-alerts". Replace this with a table.
+ * Suggested name: brand_monitor.notification_recipients
+ *
+ *   person_name  STRING   the name typed in the form
+ *   channel      STRING   email, slack, teams, discord, google-chat, webhook
+ *   address      STRING   the email or the https webhook. Prefer not to
+ *                         keep this in a table everyone can read. Store
+ *                         destination_id once the destination exists, and
+ *                         keep the raw URL inside the Databricks
+ *                         destination (it is encrypted there).
+ *   send_when    STRING   mismatch, or mismatch-review
+ *   cadence      STRING   immediate, hourly, daily, weekly
+ *   reminder     STRING   none, 1d, 3d, daily-until-open
+ *   enabled      BOOLEAN
+ *   destination_id STRING filled after the admin creates the destination
+ *
+ * One saved person looks like this. The values are examples, not real
+ * addresses:
+ *
+ *   { "name": "Kim",
+ *     "channels": [
+ *       { "channel": "email", "address": "kim@company.com",
+ *         "when": "mismatch", "often": "daily", "reminder": "1d" },
+ *       { "channel": "slack", "address": "https://hooks.slack.com/services/…",
+ *         "when": "mismatch", "often": "immediate", "reminder": "none" }
+ *     ] }
+ *
+ * Address formats the form already checks:
  *   email        one email address. Not a Slack or Teams username.
- *   slack        incoming webhook. https://hooks.slack.com/services/T…/B…/…
+ *   slack        https://hooks.slack.com/services/T…/B…/…
  *                The URL is already tied to one channel.
- *   teams        the Workflow webhook Teams gives you. powerplatform.com,
- *                logic.azure.com, or the older webhook.office.com URL.
+ *   teams        the Workflow URL Teams gives you (powerplatform.com,
+ *                logic.azure.com, or the older webhook.office.com URL).
  *   discord      https://discord.com/api/webhooks/…
  *   google-chat  https://chat.googleapis.com/v1/spaces/…/messages?…
- *   webhook      any other https address that accepts the alert.
+ *   webhook      any other https address.
  *
- * This browser stores the people under "brand-check-alerts". Databricks
- * sends. Do not write a webhook or an email address into git.
+ * The findings the alert reads
+ * ----------------------------
+ * SQL Alert does not know about this screen. Point it at the gold
+ * findings table. A row is alertable only while nobody has opened it.
+ *
+ *   brand_monitor.findings
+ *     page_id, title, verdict, flag_count, first_reason, page_url,
+ *     detected_at, opened_at, status
+ *
+ * verdict is mismatch, review, or on-brand. status starts as new.
+ * The queue click in dashboard.js writes localStorage "brand-check-seen".
+ * When the table exists, that click must set opened_at and status so
+ * the alert query stops selecting the page. A reminder uses the same
+ * opened_at. Review is not a high severity. The default send_when
+ * (mismatch) must not include it.
+ *
+ * Where the destinations are created
+ * -----------------------------------
+ * A workspace admin creates these. They are not in the SQL editor.
+ * Username menu, Settings, Notifications, Manage, Add destination.
+ * One destination per address, because each address has its own cadence.
+ * Three people who each want email, Teams, Slack, and Discord are
+ * twelve destinations.
+ *
+ *   email        type Email. Put that one address in addresses.
+ *   slack        type Slack. Paste the hooks.slack.com URL.
+ *                Databricks writes the Slack message. Do not post the
+ *                raw alert JSON to that URL yourself.
+ *   teams        type Microsoft Teams. Paste the workflow URL.
+ *                Databricks writes the Teams message.
+ *   discord      no destination type. See the Job below.
+ *   google-chat  no destination type. See the Job below.
+ *   webhook      type Webhook. The receiver must understand the SQL
+ *                alert payload. That payload is an alert state change.
+ *                It is not the list of pages.
+ *
+ * Docs used on 20 Nov 2026:
+ *   Notification destinations
+ *     https://docs.databricks.com/aws/en/admin/workspace-settings/notification-destinations
+ *   Create an alert
+ *     https://docs.databricks.com/aws/en/sql/user/alerts/create
+ *   Webhook payload
+ *     https://docs.databricks.com/aws/en/sql/user/alerts/webhook-payload
+ *
+ * The alerts to create
+ * --------------------
+ * One SQL Alert has one schedule. Do not put a daily email and an
+ * immediate Slack message on the same alert. Split by cadence, then
+ * again by send_when. Subscribe only the destination_id values that
+ * match that pair.
+ *
+ *   cadence     Quartz cron              timezone
+ *   immediate   0 0/15 * * * ?           Europe/Stockholm
+ *   hourly      0 0 * * * ?              Europe/Stockholm
+ *   daily       0 0 8 * * ?              Europe/Stockholm
+ *   weekly      0 0 8 ? * MON            Europe/Stockholm
+ *
+ * "As soon as it is found" means the next 15-minute run. SQL Alert
+ * cannot fire at the moment the row is inserted.
+ *
+ * Mismatch query. Attach every destination whose send_when is
+ * mismatch or mismatch-review, and whose cadence is this alert's cadence.
+ *
+ *   SELECT page_id, title, flag_count, first_reason, page_url
+ *   FROM brand_monitor.findings
+ *   WHERE status = 'new'
+ *     AND opened_at IS NULL
+ *     AND verdict = 'mismatch'
+ *
+ * Review query. Attach only destinations whose send_when is
+ * mismatch-review. Same cadence split.
+ *
+ *   SELECT page_id, title, flag_count, first_reason, page_url
+ *   FROM brand_monitor.findings
+ *   WHERE status = 'new'
+ *     AND opened_at IS NULL
+ *     AND verdict = 'review'
+ *
+ * Condition on both: COUNT of page_id GREATER_THAN 0.
+ * When the query returns no rows, the alert state must go back to OK.
+ * Leave retrigger at "do not send again" (retrigger_seconds 0).
+ * Repeating is the reminder Job, not the alert retrigger. Retrigger
+ * cannot see per-person reminder settings.
+ *
+ * Set the alert custom subject and body so email, Slack, and Teams
+ * name the page, the flag count, and the first reason. The webhook
+ * payload (event alert_state_change, evaluation state TRIGGERED)
+ * carries the alert name, the query text, and the evaluation. It does
+ * not carry the result rows. A receiver that must print the page list
+ * has to query brand_monitor.findings itself.
+ *
+ * The Job for reminders, Discord, and Google Chat
+ * -----------------------------------------------
+ * A scheduled Job, Python task, reads the two tables and posts.
+ * Do not use a job-run notification for this. Those fire when the Job
+ * succeeds or fails, not when a page is off brand.
+ *
+ * Discord body is { "content": "<text>" }.
+ * Google Chat body is { "text": "<text>" }.
+ * A generic webhook can be the SQL Alert destination instead, if that
+ * system accepts the alert_state_change JSON.
+ *
+ * Read the URL from a secret scope, one secret per destination.
+ * The table stores the secret name, not the URL.
+ *
+ * Reminder rules, evaluated once a day. Skip a row once opened_at is set.
+ *   none               send nothing extra
+ *   1d                 one extra send when detected_at is a day old,
+ *                      then set reminder_sent_at so it does not repeat
+ *   3d                 one extra send when detected_at is 3 days old,
+ *                      then set reminder_sent_at
+ *   daily-until-open   send each day while opened_at is still null
+ *
+ * The message text to post is the same shape messageFor() builds:
+ * the page title, the flag count, and the first reason. One message
+ * can list every still-open page for that destination.
+ *
+ * After a real send, write notification_log
+ * (finding page_id, destination_id, sent_at, kind) where kind is
+ * "alert" or "reminder". The test button in this file is not that log.
+ *
+ * What not to do
+ * --------------
+ * Do not email the distributor and do not take a page down.
+ * Do not commit a webhook. Copy Kim's addresses from this browser into
+ * the destination screen during the hackathon, then leave them there.
  */
 
 const STORE_KEY = "brand-check-alerts";

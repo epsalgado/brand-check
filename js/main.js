@@ -35,7 +35,9 @@
  *      that person's email, Slack, Teams, Discord,
  *      Google Chat, or a webhook. Several people
  *      can each have all of those. Each address
- *      has its own timing.
+ *      has its own timing. This file only stores
+ *      the choice. The header in alerts.js says
+ *      how to make Databricks send it.
  *      This browser stores the addresses.
  *      Databricks sends. Do not put a secret in git.
  *

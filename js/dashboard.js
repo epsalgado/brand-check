@@ -32,7 +32,9 @@
  * under "brand-check-seen". A page he has not opened stays shaded, bold,
  * and labeled New. Opening the case on load does not clear New. Urgent
  * and In progress wait until Kim asks for them. On Databricks, store
- * seen in the table so it follows him to another computer.
+ * seen on the finding as opened_at. alerts.js uses that column to stop
+ * the alert and to decide reminders. A click that only writes this
+ * browser key does not stop a Databricks alert.
  *
  * renderDashboard(reports, context) paints the current reports.
  * context.hub is the Brand Hub. context.score is the pass share.
