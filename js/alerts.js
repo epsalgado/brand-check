@@ -9,10 +9,12 @@
  * for one person. Each address keeps its own schedule.
  *
  * This file does not send anything. "Send test" only stores a time in
- * this browser. Wilmer and Riman: the send is a Databricks SQL Alert
- * plus one Job for the cases SQL Alert cannot cover. Read the block
- * below before creating the alert. Do not put a webhook or an email
- * address in git.
+ * this browser. Wilmer and Riman: do this after the pull steps in
+ * README.md, "After you pull this into Databricks". brand_monitor.findings
+ * has to exist first. The model list for the judge is on that page.
+ * The send itself is a Databricks SQL Alert plus one Job for the cases
+ * SQL Alert cannot cover. Read the block below before creating the
+ * alert. Do not put a webhook or an email address in git.
  *
  * What the browser stores
  * ------------------------

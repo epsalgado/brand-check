@@ -47,6 +47,13 @@
  * Nothing from Alfa Laval's hub, agent, design-system MCP, or closed
  * systems is connected. Each stand-in says so on the screen. Replace the
  * stand-in in the file named above and leave the call shape alone.
+ *
+ * After a pull into a Databricks Git folder, follow README.md,
+ * "After you pull this into Databricks". The pull does not start the
+ * model or the send. Load products.json and sources.json, run the
+ * three model calls named there, write brand_monitor.findings, then
+ * follow the header in alerts.js. The model list is:
+ * https://docs.databricks.com/aws/en/machine-learning/model-serving/foundation-model-overview
  */
 
 import { loadBrandHub } from "./brand-hub.js?v=4";

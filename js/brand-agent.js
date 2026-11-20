@@ -17,6 +17,13 @@
  * supplies the same answer from the local checks (claims, logo, color,
  * language). High flags are a Mismatch. Language-only flags are a Review.
  * No flags is On brand.
+ *
+ * After a Databricks pull, the replacement is ai_query against a
+ * system.ai text model (Claude Sonnet, or Haiku if cost is tight).
+ * A vision model judges logo.image. An embedding model only picks
+ * which hub product to compare. The model list, the table names, and
+ * the order are in README.md under "After you pull this into Databricks".
+ * Keep this return shape. Do not make sentiment the verdict.
  */
 
 import { analyzePage } from "./analyzer.js?v=4";

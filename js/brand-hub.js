@@ -18,6 +18,11 @@
  * When the hub connects: load the hub here, set status to "connected",
  * and keep returning { id, status, label, note, catalogue }. The agent
  * and the dashboard read those fields. They should not learn a new shape.
+ *
+ * After a Databricks pull, load data/products.json into
+ * brand_monitor.hub_products and keep serving it from here until Gautam
+ * connects the real hub. The rest of the pull steps are in README.md,
+ * "After you pull this into Databricks".
  */
 
 import { loadCatalogue } from "./catalogue.js?v=4";

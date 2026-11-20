@@ -4,7 +4,7 @@ Round Two. One screen that collects pages. The Brand Agent compares each page wi
 
 The public page is the prototype. Wilmer: start at the header in `js/main.js`. It records what Kim asked for on 18 Nov 2026 and which file to edit. Brand Hub, Brand Agent, the design-system MCP, and the closed systems behind the country score are not connected. The code marks each one as a stand-in.
 
-GitHub and Databricks can exchange this repo both ways. A push here is pulled into a Databricks Git folder. A commit there can be pushed back. Collected pages and scores live in Databricks tables, not in the git files.
+GitHub and Databricks can exchange this repo both ways. A push here is pulled into a Databricks Git folder. A commit there can be pushed back. Collected pages and scores live in Databricks tables, not in the git files. A pull brings this repo. It does not start the model or the send. The steps after the pull are under **After you pull this into Databricks**.
 
 ## What a coder walks through
 
@@ -93,9 +93,55 @@ The screen already has a slot for each approval:
 | On brand by source | `speaker` on each row in `data/sources.json` | Alfa Laval site, Distributors, Partners, Other websites, Social. The strip shows passed of total for each. |
 | Social only from an approved feed | a new row with `channel` and `speaker` set to `social`, `origin` `live` | The two LinkedIn rows are seeded examples. The card says “Examples only.” |
 
-## What moves to Databricks
+## After you pull this into Databricks
 
-`collector.js` is the piece that changes. A scheduled job fetches real pages and fills the same fields, including logo and color from a vision step. `brand-hub.js` then reads their hub, and `brand-agent.js` calls their agent. The dashboard still reads `verdict`, `checks`, and `flags`.
+Wilmer and Riman: do these in order. The GitHub page keeps working as the prototype while you do them. Leave `verdict`, `checks`, and `flags` in the shape `dashboard.js` already reads.
+
+The model list the team was sent, 20 Nov 2026:
+
+https://docs.databricks.com/aws/en/machine-learning/model-serving/foundation-model-overview
+
+That page is the menu of models. A name on the page can still be missing in this workspace. Open Unity Gateway and confirm the service exists, and that you can query it, before you write the job. Use a `system.ai` model on pay-per-token. This batch is small. Do not reserve provisioned throughput.
+
+Call the model with `ai_query` from a SQL warehouse that supports AI Functions, or from a Job on Databricks Runtime 15.4 LTS or newer. Classic SQL warehouses cannot run `ai_query`.
+
+### 1. Load what this repo already collected
+
+| Load this | Into | Why |
+| --- | --- | --- |
+| `data/products.json` | `brand_monitor.hub_products` | The Brand Hub stand-in. 375 product pages copied from alfalaval.com on 18 Nov 2026. The real hub, when Gautam connects it, replaces `js/brand-hub.js` only. |
+| `data/sources.json` | `brand_monitor.pages` | The found pages. `speaker`, `origin`, `country`, `text`, and `logo` stay as they are. |
+| `assets/alfa-laval-logo.svg` and `assets/found/` | a Unity Catalog Volume | The Brand Hub logo, the Element plaque, and the written stretched-logo example. The vision step reads these files. |
+
+`origin` `live` was copied on 18 Nov 2026. `origin` `seeded` was written so the miss is obvious. Keep that column. Social rows stay seeded until Kim names an approved feed.
+
+### 2. Three model calls, then one findings table
+
+The stand-in judge is `js/analyzer.js`. Keep it until the table below agrees with it on the seeded rows. Then `js/brand-agent.js` can read the table. The return shape stays `verdict` plus one reason per flag.
+
+| Job | Model to ask for | What it must return |
+| --- | --- | --- |
+| Pick which of the 375 products the page is about | An embedding model. GTE Large (English), or Qwen3-Embedding. | The nearest hub row. This does not decide On brand or Mismatch. |
+| Judge the words | A text model such as Claude Sonnet. Haiku is enough if the workspace is limiting cost. | `on-brand`, `review`, or `mismatch`, and one reason per problem. A high flag is a Mismatch. Language-only is a Review. No flags is On brand. |
+| Judge the logo, when `logo.image` is set | A vision model. Llama 4 Maverick, or Claude Sonnet. Pass the found image and `assets/alfa-laval-logo.svg`. | Its own flag when the mark does not match the hub logo. Element is a mismatch because the blue field is `#11387F`, 96 away from navy `#0B1128`. The letters match. |
+
+The Gemini image models on that page make pictures. They are the wrong call, and they are not available to `ai_query`.
+
+Sentiment models are on the same page. Leave them off the alert. A page can sound positive and still be off brand.
+
+Write `brand_monitor.findings` with `page_id`, `title`, `verdict`, `flag_count`, `first_reason`, `page_url`, `speaker`, `country`, `detected_at`, `opened_at`, `status`. The score, the queue, and the alert read this table. `status` starts as `new`. `opened_at` stays empty until someone opens the page.
+
+A Lakeflow pipeline or a scheduled Job can run the three calls. Bronze is `pages`. Gold is `findings`.
+
+### 3. Point the screen and the alert at that table
+
+`js/dashboard.js` draws the gold rows. It does not judge them. The **New** click today writes `brand-check-seen` in the browser. The same click has to set `opened_at` on the finding. Until it does, an alert keeps firing after Kim has opened the page.
+
+The bell stores people and schedules in this browser under `brand-check-alerts`. It does not send. Create the destinations and the SQL Alerts only after `findings` has rows. The header of `js/alerts.js` is the send: one destination per address, one alert per cadence, a separate Job for Discord, Google Chat, and reminders. Do not commit a webhook.
+
+### 4. What can wait for Kim
+
+The public catalogue can load before the real Brand Hub exists. The seeded pages can be judged before a social feed exists. Real email and webhook addresses wait until Kim types them into the bell. Do not scrape LinkedIn, Instagram, Facebook, or X until he names an approved feed.
 
 ## Run it
 
