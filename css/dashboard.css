@@ -182,6 +182,16 @@ button {
   color: var(--navy);
 }
 
+.alerts-demo {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background: #fff4e0;
+  box-shadow: inset 4px 0 0 #8a4b08;
+  color: #8a4b08;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .alerts-lead,
 .alerts-empty,
 .alerts-hint,

@@ -271,6 +271,7 @@ function buildDialog() {
         </div>
         <button type="button" class="alerts-close" data-close="1" aria-label="Close">Close</button>
       </header>
+      <p class="alerts-demo">Demo. This does not send yet. Addresses stay in this browser. When they are saved in Databricks, this same list is what gets sent.</p>
       <p class="alerts-lead">Add a person, then each place they should be notified: email, Teams, Slack, and Discord. Add the next person the same way. Three people can each have all four. Every address keeps its own schedule.</p>
       <div id="alerts-now"></div>
       <div id="alerts-routes"></div>
