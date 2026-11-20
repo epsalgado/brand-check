@@ -1,0 +1,31 @@
+---
+description: Frontend feature/component separation and API access rules
+globs: src/Frontend/**/*
+alwaysApply: false
+---
+
+# Frontend architecture
+
+Folders:
+
+- `Components/` — shared reusable UI used by features
+- `Features/` — page/feature modules (one concern per feature folder)
+- `Api/` — HTTP clients that talk to Backend only
+
+## Allowed dependencies
+
+- Features may use `Components/` and `Api/`
+- Components may use other shared Components
+- Api may call Backend over HTTP
+
+## Forbidden
+
+- A feature must not import or call another feature
+- Components must not depend on Features
+- Features and Components must not call Backend HTTP directly — only `Api/` does that
+
+## Placement
+
+- Page/UI orchestration lives in Features
+- Shared widgets live in Components
+- New feature work goes under `Features/{FeatureName}/`

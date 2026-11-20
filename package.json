@@ -1,0 +1,28 @@
+{
+  "name": "brand-check",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Round Two. One screen that collects pages. The Brand Agent compares each page with the Brand Hub and raises one flag per problem.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "arch": "depcruise src/Backend src/Frontend --config .dependency-cruiser.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epsalgado/brand-check.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "next": "^15.5.29",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^18.8.0",
+    "vitest": "^5.1.1"
+  }
+}
