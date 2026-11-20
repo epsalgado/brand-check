@@ -1,0 +1,38 @@
+---
+description: Backend layered architecture and testing rules
+globs: src/Backend/**/*
+alwaysApply: false
+---
+
+# Backend architecture
+
+Layer call direction (strict):
+
+`Controller → Service → Repository → Persistence`
+
+## Allowed dependencies
+
+| Layer | May call |
+|---|---|
+| Controllers | Services, Dto |
+| Services | Repositories, Domain, Dto |
+| Repositories | Persistence, Domain |
+| Domain | (nothing outward) |
+| Dto | (nothing outward) |
+| Persistence | Domain |
+| Middleware | infrastructure / cross-cutting only |
+
+## Forbidden
+
+- Repositories must never call Services (or Controllers)
+- Controllers must never call Repositories or Persistence directly
+- Domain must not reference Controllers, Services, Repositories, Middleware, Dto, or Persistence
+- Dto must not reference Controllers, Services, Repositories, Middleware, or Persistence
+- Domain stays free of Express/Fastify/Node HTTP types; use Dto at the API boundary
+
+## Testing
+
+- Every backend interaction must have tests
+- New or changed Controllers and Services require corresponding unit or integration tests under `tests/Backend/`
+- Layer boundaries are enforced by `tests/Backend/Architecture.Tests` — keep those rules green
+- Do not add interaction code without tests
