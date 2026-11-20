@@ -1,0 +1,16 @@
+{
+  "sample": true,
+  "note": "Invented counts so the Genie stand-in can answer download questions. Not Frontify and not the Brand Hub. Replace this file with the real download table.",
+  "rows": [
+    { "asset": "Alfa Laval logo", "kind": "logo", "country": "India", "companyType": "Distributor", "ageDays": 12, "downloads": 48 },
+    { "asset": "Distributor plaque template", "kind": "template", "country": "India", "companyType": "Distributor", "ageDays": 15, "downloads": 27 },
+    { "asset": "Alfa Laval logo", "kind": "logo", "country": "United States", "companyType": "Distributor", "ageDays": 20, "downloads": 31 },
+    { "asset": "Product one-pager template", "kind": "template", "country": "United States", "companyType": "Partner", "ageDays": 70, "downloads": 9 },
+    { "asset": "Alfa Laval logo", "kind": "logo", "country": "Germany", "companyType": "Partner", "ageDays": 40, "downloads": 18 },
+    { "asset": "Social post template", "kind": "template", "country": "Sweden", "companyType": "Alfa Laval", "ageDays": 8, "downloads": 22 },
+    { "asset": "Alfa Laval logo", "kind": "logo", "country": "Sweden", "companyType": "Alfa Laval", "ageDays": 6, "downloads": 16 },
+    { "asset": "Ad template", "kind": "template", "country": "United Kingdom", "companyType": "Distributor", "ageDays": 55, "downloads": 14 },
+    { "asset": "Alfa Laval logo", "kind": "logo", "country": "Singapore", "companyType": "Partner", "ageDays": 25, "downloads": 11 },
+    { "asset": "Social post template", "kind": "template", "country": "Germany", "companyType": "Partner", "ageDays": 80, "downloads": 7 }
+  ]
+}

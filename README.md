@@ -21,6 +21,7 @@ Start at `js/main.js`. It runs the product in order:
 | Score | `js/score.js` | On brand in total, and per country. The score is how many pages passed. Review does not pass. |
 | Show | `js/dashboard.js` | Draws the score, the source counts, the queue, and the open case. It numbers the flags. It does not decide the verdict. |
 | Notify | `js/alerts.js` | The bell. Kim adds people and their addresses. The header of that file is the Databricks send: destinations, one alert per schedule, and the reminder Job. |
+| Genie | `js/genie.js` | The question box. `askGenie()` is the stand-in. Replace that function with the Genie space. The panel stays. |
 
 The design system is the look of the screen only (`css/dashboard.css`). It is not one of the checks.
 
@@ -92,6 +93,7 @@ The screen already has a slot for each approval:
 | Score is the share that passed, in total and per country | `js/score.js` | Passed of total on the blue tile, and the same split on each country chip. Review does not pass. |
 | On brand by source | `speaker` on each row in `data/sources.json` | Alfa Laval site, Distributors, Partners, Other websites, Social. The strip shows passed of total for each. |
 | Social only from an approved feed | a new row with `channel` and `speaker` set to `social`, `origin` `live` | The two LinkedIn rows are seeded examples. The card says “Examples only.” |
+| Genie answers from the tables | `askGenie()` in `js/genie.js` | Stand-in. It answers this run, plus sample logo and template downloads in `data/downloads.json`. Clicks are not invented. |
 
 ## After you pull this into Databricks
 

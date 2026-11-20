@@ -40,6 +40,10 @@
  *      how to make Databricks send it.
  *      This browser stores the addresses.
  *      Databricks sends. Do not put a secret in git.
+ *   7. Genie answers a question from the tables.   genie.js
+ *      Stand-in. askGenie() is the function to
+ *      replace with the Databricks Genie space.
+ *      Downloads are a sample file, not Frontify.
  *
  * The design system is the look of this screen only (css/dashboard.css).
  * It is not a check.
@@ -62,6 +66,7 @@ import { judgePage } from "./brand-agent.js?v=4";
 import { scoreRun } from "./score.js?v=4";
 import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js?v=4";
 import { mountAlerts, refreshAlerts } from "./alerts.js?v=8";
+import { mountGenie, refreshGenie } from "./genie.js?v=9";
 
 async function start() {
   const hub = await loadBrandHub();
@@ -72,6 +77,7 @@ async function start() {
   renderDashboard(reports, { hub, score });
   bindDashboard(reports, { hub, score }, () => runScan(reports, { hub, score }));
   mountAlerts(reports);
+  mountGenie(reports);
   document.getElementById("run-note").textContent =
     `${score.passed} of ${score.total} on brand (${score.share}%). ${hub.catalogue.length} products in the Brand Hub stand-in.`;
 }
@@ -82,6 +88,7 @@ function runScan(reports, context) {
   window.setTimeout(() => {
     renderDashboard(reports, context);
     refreshAlerts(reports);
+    refreshGenie(reports);
     setScanning(false);
   }, 700);
 }

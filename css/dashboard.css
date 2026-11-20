@@ -724,6 +724,133 @@ h3 { margin: 0 0 12px; font-size: 15px; font-weight: 700; color: var(--navy); }
 body.is-scanning .case,
 body.is-scanning .queue-wrap { opacity: 0.55; }
 
+.genie {
+  margin-top: 16px;
+  padding: 16px 16px 14px;
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(11, 17, 40, 0.08);
+}
+
+.genie-head { margin-bottom: 10px; }
+
+.genie-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--navy);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.genie-spark {
+  width: 14px;
+  height: 14px;
+  background: #ff3621;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+
+.genie-stand {
+  padding: 1px 6px;
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.genie-sub,
+.genie-empty,
+.genie-note {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.genie-log {
+  max-height: 280px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+.genie-you {
+  margin-left: 18%;
+  padding: 8px 12px;
+  background: var(--blue-wash);
+}
+
+.genie-turn { margin: 0 0 10px; }
+.genie-turn p { margin: 0; color: var(--navy); }
+.genie-who {
+  color: #ff3621 !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.genie-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.genie-chips button {
+  padding: 8px 10px;
+  background: var(--paper);
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.genie-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+
+.genie-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--navy);
+  font: inherit;
+}
+
+.genie-table-wrap { overflow: auto; margin-top: 8px; }
+
+.genie table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.genie th {
+  text-align: left;
+  padding: 6px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+
+.genie td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--blue-wash);
+  color: var(--navy);
+}
+
+.genie-bar {
+  display: inline-block;
+  height: 8px;
+  margin-right: 8px;
+  background: #ff3621;
+  vertical-align: middle;
+}
+
 @media (max-width: 900px) {
   .kpis, .links, .board, .compare, .logo-compare, .queue-head { grid-template-columns: 1fr; }
   .queue-head { display: none; }
