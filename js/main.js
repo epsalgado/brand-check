@@ -31,9 +31,11 @@
  *      pass. Passed of total is the only score.
  *   5. Draw that, including on brand by source.   dashboard.js
  *      Do not judge here.
- *   6. Notifications. Kim sets email, Slack,        alerts.js
- *      Teams, Discord, Google Chat, or a webhook.
- *      Each destination has its own timing.
+ *   6. Notifications. Kim adds a person, then       alerts.js
+ *      that person's email, Slack, Teams, Discord,
+ *      Google Chat, or a webhook. Several people
+ *      can each have all of those. Each address
+ *      has its own timing.
  *      This browser stores the addresses.
  *      Databricks sends. Do not put a secret in git.
  *
@@ -50,7 +52,7 @@ import { collectPages } from "./collector.js?v=4";
 import { judgePage } from "./brand-agent.js?v=4";
 import { scoreRun } from "./score.js?v=4";
 import { renderDashboard, bindDashboard, setScanning } from "./dashboard.js?v=4";
-import { mountAlerts, refreshAlerts } from "./alerts.js?v=5";
+import { mountAlerts, refreshAlerts } from "./alerts.js?v=6";
 
 async function start() {
   const hub = await loadBrandHub();

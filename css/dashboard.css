@@ -156,7 +156,7 @@ button {
   position: absolute;
   top: 76px;
   right: 28px;
-  width: min(520px, calc(100% - 24px));
+  width: min(640px, calc(100% - 24px));
   max-height: calc(100vh - 96px);
   overflow: auto;
   padding: 18px 18px 20px;
@@ -249,6 +249,60 @@ button {
 }
 
 .alerts-form h3 { margin: 0; }
+
+.person-card {
+  margin: 0 0 12px;
+  padding: 10px 12px 4px;
+  background: var(--paper);
+}
+
+.person-card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.person-card h3 { margin: 0; }
+
+.person-card header button,
+.add-channels button,
+.channel-block > button {
+  background: var(--white);
+  color: var(--navy);
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.person-card .route-list li { background: var(--white); }
+
+.channel-block {
+  position: relative;
+  margin: 0;
+  padding: 10px 12px 12px;
+  border: 1px solid var(--line);
+}
+
+.channel-block legend {
+  padding: 0 6px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.channel-block > button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.add-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 
 .alerts-form label {
   display: grid;

@@ -55,7 +55,7 @@ Add a page by appending to `data/sources.json`. Set `speaker`. The analyzer and 
 
 `url` is what Kim clicks. A real `https` address becomes a link on the row and in the open case. `example.com` is a written sample and is not linked.
 
-The bell at the top right is where Kim sets alerts. Email takes one or more email addresses. Slack, Teams, Discord, and Google Chat take the webhook address that tool gives you, not a username. A webhook row is any other https address. Several destinations can be on at once, and each one has its own timing: immediately, hourly, daily, or weekly, and an optional reminder if the page is still unopened. The addresses stay in this browser. Databricks is what sends. Do not commit a webhook.
+The bell at the top right is where Kim sets alerts. He adds a person, then that person's email, Teams, Slack, Discord, Google Chat, or another webhook. The same person can have all of them. He then adds the next person, so several people can each receive the same kinds of alert. Chat tools take the webhook address that tool gives you, not a username. Every address has its own timing: immediately, hourly, daily, or weekly, and an optional reminder if the page is still unopened. The addresses stay in this browser. Databricks is what sends. Do not commit a webhook.
 
 ## The four checks
 

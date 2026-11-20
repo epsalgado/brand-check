@@ -1,26 +1,24 @@
 /**
  * Alerts
  * ------
- * The bell at the top right. Kim chooses where a notification goes,
- * when it goes, how often, and whether a reminder follows.
+ * The bell at the top right. Kim adds a person, then every place that
+ * person should be notified. One person can have an email, a Teams
+ * webhook, a Slack webhook, and a Discord webhook at the same time.
+ * The next person is added the same way, so three people can each
+ * have all four. The same kind can also be repeated, such as two emails
+ * for one person. Each address keeps its own schedule.
  *
  * Address formats, checked here:
- *   email        one or more email addresses, separated by commas.
- *                Not a Slack or Teams username.
+ *   email        one email address. Not a Slack or Teams username.
  *   slack        incoming webhook. https://hooks.slack.com/services/T…/B…/…
  *                The URL is already tied to one channel.
  *   teams        the Workflow webhook Teams gives you. powerplatform.com,
  *                logic.azure.com, or the older webhook.office.com URL.
- *                A person's email belongs in the email row.
  *   discord      https://discord.com/api/webhooks/…
  *   google-chat  https://chat.googleapis.com/v1/spaces/…/messages?…
  *   webhook      any other https address that accepts the alert.
  *
- * Several rows can be active together. An email every morning and a
- * Slack message the moment a mismatch appears are two rows, each with
- * its own schedule.
- *
- * This browser stores the rows under "brand-check-alerts". Databricks
+ * This browser stores the people under "brand-check-alerts". Databricks
  * sends. Do not write a webhook or an email address into git.
  */
 
@@ -29,33 +27,33 @@ const STORE_KEY = "brand-check-alerts";
 const CHANNELS = {
   email: {
     label: "Email",
-    placeholder: "kim@company.com, brand-team@company.com",
-    hint: "One email address, or several separated by commas. This is not a Slack or Teams username."
+    placeholder: "kim@company.com",
+    hint: "This person's email address. Not a Slack or Teams username."
   },
   slack: {
     label: "Slack",
     placeholder: "https://hooks.slack.com/services/T…/B…/…",
-    hint: "Paste the incoming webhook Slack gives you. That URL already points at one channel. A @username does not receive this."
+    hint: "The incoming webhook for this person's Slack channel. A @username does not receive this."
   },
   teams: {
     label: "Microsoft Teams",
     placeholder: "https://….environment.api.powerplatform.com/…",
-    hint: "Paste the Workflow webhook from Teams. It is a Power Automate address. A person's email is the Email choice, not this one."
+    hint: "The Workflow webhook for this person's Teams channel. Their email belongs on the Email line."
   },
   discord: {
     label: "Discord",
     placeholder: "https://discord.com/api/webhooks/…/…",
-    hint: "Paste the channel webhook from Discord. Server settings, Integrations, Webhooks. Discord does not use a username for this."
+    hint: "The webhook for this person's Discord channel. Discord does not use a username for this."
   },
   "google-chat": {
     label: "Google Chat",
     placeholder: "https://chat.googleapis.com/v1/spaces/…/messages?key=…&token=…",
-    hint: "Paste the incoming webhook for the Chat space. The URL is tied to that space."
+    hint: "The webhook for this person's Google Chat space."
   },
   webhook: {
     label: "Other webhook",
     placeholder: "https://…",
-    hint: "Any other https address that should receive the alert, such as another tool your team already uses."
+    hint: "Any other https address for this person."
   }
 };
 
@@ -79,14 +77,13 @@ const REMIND_LABEL = {
 };
 
 let reports = [];
-let routes = loadRoutes();
+let people = loadPeople();
 let dialog;
 
 export function mountAlerts(nextReports) {
   reports = nextReports;
   if (!dialog) dialog = buildDialog();
-  const openButton = document.getElementById("alerts-open");
-  openButton.addEventListener("click", openDialog);
+  document.getElementById("alerts-open").addEventListener("click", openDialog);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeDialog();
   });
@@ -109,69 +106,50 @@ function buildDialog() {
       <header class="alerts-head">
         <div>
           <p class="eyebrow">Notifications</p>
-          <h2 id="alerts-title">Where should an alert go?</h2>
+          <h2 id="alerts-title">Who should hear about it?</h2>
         </div>
         <button type="button" class="alerts-close" data-close="1" aria-label="Close">Close</button>
       </header>
-      <p class="alerts-lead">Add every place that should hear about a problem. An email each morning and a Slack message the moment a mismatch appears are two rows. Each row keeps its own schedule.</p>
+      <p class="alerts-lead">Add a person, then each place they should be notified: email, Teams, Slack, and Discord. Add the next person the same way. Three people can each have all four. Every address keeps its own schedule.</p>
       <div id="alerts-now"></div>
       <div id="alerts-routes"></div>
       <form id="alerts-form" class="alerts-form">
-        <h3>Add a destination</h3>
-        <label>Where
-          <select name="channel" id="alerts-channel"></select>
+        <h3>Add a person</h3>
+        <label>Name
+          <input id="alerts-person" name="person" type="text" maxlength="80" placeholder="Kim Gustafsson" autocomplete="name" required>
         </label>
-        <label>Name <span>optional</span>
-          <input name="label" type="text" maxlength="80" placeholder="Brand team" autocomplete="off">
-        </label>
-        <label>Address
-          <input name="address" id="alerts-address" type="text" autocomplete="off" required>
-        </label>
-        <p class="alerts-hint" id="alerts-hint"></p>
-        <div class="alerts-split">
-          <label>Send when
-            <select name="when">
-              ${options(WHEN_LABEL)}
-            </select>
-          </label>
-          <label>How often
-            <select name="often">
-              ${options(OFTEN_LABEL)}
-            </select>
-          </label>
+        <div id="alerts-blocks"></div>
+        <div class="add-channels">
+          ${Object.entries(CHANNELS).map(([id, item]) =>
+            `<button type="button" data-add-channel="${id}">Add ${item.label}</button>`
+          ).join("")}
         </div>
-        <label>Reminder
-          <select name="reminder">
-            ${options(REMIND_LABEL)}
-          </select>
-        </label>
         <p class="alerts-error" id="alerts-error" hidden></p>
-        <button type="submit">Add this destination</button>
+        <button type="submit">Save this person</button>
       </form>
       <div class="alerts-test">
-        <button type="button" id="alerts-test">Send test</button>
+        <button type="button" id="alerts-test">Send test to everyone</button>
         <p id="alerts-test-note"></p>
       </div>
     </section>
   `;
   document.body.appendChild(node);
-
-  const channel = node.querySelector("#alerts-channel");
-  channel.innerHTML = Object.entries(CHANNELS)
-    .map(([id, item]) => `<option value="${id}">${item.label}</option>`)
-    .join("");
-  channel.addEventListener("change", syncHint);
-  syncHint();
+  addBlock("email");
 
   node.addEventListener("click", (event) => {
-    const closer = event.target.closest("[data-close]");
-    if (closer) closeDialog();
-    const remover = event.target.closest("[data-remove]");
-    if (remover) {
-      routes = routes.filter((route) => route.id !== remover.dataset.remove);
-      saveRoutes();
+    if (event.target.closest("[data-close]")) closeDialog();
+    const adder = event.target.closest("[data-add-channel]");
+    if (adder) addBlock(adder.dataset.addChannel, true);
+    const channelRemove = event.target.closest("[data-remove-channel]");
+    if (channelRemove) removeChannel(channelRemove.dataset.person, channelRemove.dataset.channel);
+    const personRemove = event.target.closest("[data-remove-person]");
+    if (personRemove) {
+      people = people.filter((person) => person.id !== personRemove.dataset.removePerson);
+      savePeople();
       paint();
     }
+    const draftRemove = event.target.closest("[data-remove-draft]");
+    if (draftRemove) draftRemove.closest(".channel-block").remove();
   });
 
   node.querySelector("#alerts-form").addEventListener("submit", onAdd);
@@ -179,66 +157,123 @@ function buildDialog() {
   return node;
 }
 
-function options(map) {
-  return Object.entries(map)
-    .map(([id, label]) => `<option value="${id}">${label}</option>`)
-    .join("");
+function addBlock(channelId, focus) {
+  const channel = CHANNELS[channelId];
+  const root = dialog || document.getElementById("alerts-dialog");
+  if (!channel || !root) return;
+  const block = document.createElement("fieldset");
+  block.className = "channel-block";
+  block.dataset.channel = channelId;
+  block.innerHTML = `
+    <legend>${esc(channel.label)}</legend>
+    <button type="button" data-remove-draft="1">Remove</button>
+    <label>Address
+      <input name="address" type="text" autocomplete="off" placeholder="${esc(channel.placeholder)}">
+    </label>
+    <p class="alerts-hint">${esc(channel.hint)}</p>
+    <div class="alerts-split">
+      <label>Send when
+        <select name="when">${options(WHEN_LABEL)}</select>
+      </label>
+      <label>How often
+        <select name="often">${options(OFTEN_LABEL)}</select>
+      </label>
+    </div>
+    <label>Reminder
+      <select name="reminder">${options(REMIND_LABEL)}</select>
+    </label>
+  `;
+  root.querySelector("#alerts-blocks").appendChild(block);
+  if (focus) block.querySelector("[name=address]").focus();
 }
 
-function syncHint() {
-  const channel = CHANNELS[dialog.querySelector("#alerts-channel").value];
-  const address = dialog.querySelector("#alerts-address");
-  address.placeholder = channel.placeholder;
-  dialog.querySelector("#alerts-hint").textContent = channel.hint;
+function options(map) {
+  return Object.entries(map)
+    .map(([id, label]) => `<option value="${id}">${esc(label)}</option>`)
+    .join("");
 }
 
 function onAdd(event) {
   event.preventDefault();
-  const form = event.currentTarget;
-  const data = new FormData(form);
-  const channel = String(data.get("channel"));
-  const address = String(data.get("address") || "").trim();
-  const error = validate(channel, address);
+  const name = dialog.querySelector("#alerts-person").value.trim();
   const errorNode = dialog.querySelector("#alerts-error");
-  if (error) {
-    errorNode.hidden = false;
-    errorNode.textContent = error;
+  if (!name) {
+    showError("Add the person's name first.");
+    return;
+  }
+  const channels = [];
+  for (const block of dialog.querySelectorAll(".channel-block")) {
+    const channel = block.dataset.channel;
+    const address = block.querySelector("[name=address]").value.trim();
+    if (!address) continue;
+    const error = validate(channel, address);
+    if (error) {
+      showError(`${CHANNELS[channel].label}: ${error}`);
+      return;
+    }
+    channels.push({
+      id: `${Date.now()}-${channels.length}`,
+      channel,
+      address,
+      when: block.querySelector("[name=when]").value,
+      often: block.querySelector("[name=often]").value,
+      reminder: block.querySelector("[name=reminder]").value
+    });
+  }
+  if (!channels.length) {
+    showError("Add at least one address. The same person can have email, Teams, Slack, and Discord.");
     return;
   }
   errorNode.hidden = true;
-  routes.push({
-    id: `${Date.now()}-${routes.length}`,
-    channel,
-    address,
-    label: String(data.get("label") || "").trim(),
-    when: String(data.get("when")),
-    often: String(data.get("often")),
-    reminder: String(data.get("reminder"))
+  const existing = people.find((person) => person.name.toLowerCase() === name.toLowerCase());
+  if (existing) existing.channels.push(...channels);
+  else people.push({ id: `${Date.now()}`, name, channels });
+  savePeople();
+  dialog.querySelector("#alerts-person").value = "";
+  dialog.querySelector("#alerts-blocks").replaceChildren();
+  addBlock("email");
+  dialog.querySelector("#alerts-person").focus();
+  paint();
+}
+
+function showError(message) {
+  const errorNode = dialog.querySelector("#alerts-error");
+  errorNode.hidden = false;
+  errorNode.textContent = message;
+}
+
+function removeChannel(personId, channelId) {
+  people = people.flatMap((person) => {
+    if (person.id !== personId) return [person];
+    const channels = person.channels.filter((item) => item.id !== channelId);
+    return channels.length ? [{ ...person, channels }] : [];
   });
-  saveRoutes();
-  form.reset();
-  syncHint();
+  savePeople();
   paint();
 }
 
 function onTest() {
   const note = dialog.querySelector("#alerts-test-note");
-  if (!routes.length) {
-    note.textContent = "Add a destination first. Then this sends one test through every row you saved.";
+  const channels = allChannels();
+  if (!channels.length) {
+    note.textContent = "Add a person first. The test goes to every address you saved, including a second and third person.";
     return;
   }
   const stamp = new Date().toLocaleString("en-GB", { hour: "2-digit", minute: "2-digit", day: "numeric", month: "short" });
-  routes = routes.map((route) => ({ ...route, testedAt: stamp }));
-  saveRoutes();
-  const plan = routes.map((route) => {
-    const name = route.label || CHANNELS[route.channel].label;
-    return `${name}: ${OFTEN_LABEL[route.often].toLowerCase()}`;
+  people = people.map((person) => ({
+    ...person,
+    channels: person.channels.map((item) => ({ ...item, testedAt: stamp }))
+  }));
+  savePeople();
+  const plan = people.map((person) => {
+    const bits = person.channels.map((item) => `${CHANNELS[item.channel].label} ${OFTEN_LABEL[item.often].toLowerCase()}`);
+    return `${person.name}: ${bits.join(", ")}`;
   }).join(" · ");
   note.innerHTML = `
-    <strong>Test saved at ${esc(stamp)}.</strong>
+    <strong>Test saved at ${esc(stamp)} for ${people.length} ${people.length === 1 ? "person" : "people"}.</strong>
     ${esc(plan)}.
-    Databricks sends that message. This screen keeps the addresses and the schedule.
-    <pre>${esc(messageFor(routes[0]))}</pre>
+    Databricks sends that message to every address. This screen keeps the people and the schedules.
+    <pre>${esc(messageFor(channels[0]))}</pre>
   `;
   paint();
 }
@@ -259,33 +294,49 @@ function paint() {
     : `<p class="alerts-kicker">No mismatch is waiting.</p>`;
 
   const list = dialog.querySelector("#alerts-routes");
-  list.innerHTML = routes.length
-    ? `<h3>Sending to ${routes.length} destination${routes.length === 1 ? "" : "s"}</h3>
-       <ul class="route-list">${routes.map(routeItem).join("")}</ul>`
-    : `<p class="alerts-empty">No destination yet. Add an email and a Slack webhook if both should fire. They do not have to share a schedule.</p>`;
+  const count = allChannels().length;
+  list.innerHTML = people.length
+    ? `<h3>${people.length} ${people.length === 1 ? "person" : "people"} · ${count} notification${count === 1 ? "" : "s"}</h3>
+       ${people.map(personCard).join("")}`
+    : `<p class="alerts-empty">No one is on the list yet. Save the first person with the addresses they want, then save the next person.</p>`;
 }
 
-function waitingItem(report) {
-  const page = report.page;
-  const first = report.flags[0] ? report.flags[0].detail : "";
-  return `<li><strong>${esc(page.title)}</strong><span>${esc(first)}</span></li>`;
+function personCard(person) {
+  return `
+    <article class="person-card">
+      <header>
+        <h3>${esc(person.name)}</h3>
+        <button type="button" data-remove-person="${esc(person.id)}">Remove person</button>
+      </header>
+      <ul class="route-list">
+        ${person.channels.map((item) => channelItem(person, item)).join("")}
+      </ul>
+    </article>
+  `;
 }
 
-function routeItem(route) {
-  const name = route.label || CHANNELS[route.channel].label;
-  const tested = route.testedAt ? `<span class="route-tested">Test queued ${esc(route.testedAt)}</span>` : "";
+function channelItem(person, item) {
+  const tested = item.testedAt ? `<span class="route-tested">Test queued ${esc(item.testedAt)}</span>` : "";
   return `
     <li>
       <div>
-        <strong>${esc(name)}</strong>
-        <span class="route-channel">${esc(CHANNELS[route.channel].label)}</span>
-        <code>${esc(mask(route.channel, route.address))}</code>
-        <span>${esc(WHEN_LABEL[route.when])}. ${esc(OFTEN_LABEL[route.often])}. ${esc(REMIND_LABEL[route.reminder])}.</span>
+        <span class="route-channel">${esc(CHANNELS[item.channel].label)}</span>
+        <code>${esc(mask(item.channel, item.address))}</code>
+        <span>${esc(WHEN_LABEL[item.when])}. ${esc(OFTEN_LABEL[item.often])}. ${esc(REMIND_LABEL[item.reminder])}.</span>
         ${tested}
       </div>
-      <button type="button" data-remove="${esc(route.id)}">Remove</button>
+      <button type="button" data-person="${esc(person.id)}" data-channel="${esc(item.id)}" data-remove-channel="1">Remove</button>
     </li>
   `;
+}
+
+function waitingItem(report) {
+  const first = report.flags[0] ? report.flags[0].detail : "";
+  return `<li><strong>${esc(report.page.title)}</strong><span>${esc(first)}</span></li>`;
+}
+
+function allChannels() {
+  return people.flatMap((person) => person.channels);
 }
 
 function messageFor(route) {
@@ -304,9 +355,7 @@ function messageFor(route) {
 function validate(channel, address) {
   if (!address) return "Add the address first.";
   if (channel === "email") {
-    const people = address.split(",").map((item) => item.trim()).filter(Boolean);
-    const bad = people.find((item) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item));
-    if (!people.length || bad) return "Use a real email address. For more than one, separate them with commas.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) return "Use one email address. Add another Email line for a second inbox.";
     return "";
   }
   if (!/^https:\/\/.+/i.test(address)) return "Paste the full https address.";
@@ -337,23 +386,31 @@ function mask(channel, address) {
   }
 }
 
-function loadRoutes() {
+function loadPeople() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
-    return Array.isArray(saved) ? saved.filter((route) => CHANNELS[route.channel]) : [];
+    if (!Array.isArray(saved)) return [];
+    if (saved.some((item) => Array.isArray(item.channels))) {
+      return saved.filter((person) => person && person.name && Array.isArray(person.channels));
+    }
+    return saved.filter((route) => CHANNELS[route.channel]).map((route) => ({
+      id: route.id,
+      name: route.label || CHANNELS[route.channel].label,
+      channels: [route]
+    }));
   } catch {
     return [];
   }
 }
 
-function saveRoutes() {
-  localStorage.setItem(STORE_KEY, JSON.stringify(routes));
+function savePeople() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(people));
 }
 
 function openDialog() {
   dialog.hidden = false;
   paint();
-  dialog.querySelector("#alerts-address").focus();
+  dialog.querySelector("#alerts-person").focus();
 }
 
 function closeDialog() {
